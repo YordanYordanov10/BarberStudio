@@ -1,6 +1,7 @@
 package bg.softuni.barberstudio.Service.Model;
 
 
+import bg.softuni.barberstudio.Barber.Model.Barber;
 import bg.softuni.barberstudio.User.Model.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -32,6 +33,9 @@ public class Service {
 
     @ManyToOne
     private User user;
+
+    @ManyToOne
+    private Barber barber;
 
 
 }

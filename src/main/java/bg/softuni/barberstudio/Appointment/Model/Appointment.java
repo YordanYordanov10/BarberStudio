@@ -10,8 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Time;
-import java.util.Date;
+
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -26,17 +26,15 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private Date date;
-
-    private Time time;
-
     @ManyToOne
-    private User user;
-
-    @ManyToOne
+    @JoinColumn(name = "barber_id", referencedColumnName = "id")
     private Barber barber;
 
-    @OneToOne
-    private Service service;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
+    @Column(name = "appointment_date")
+    private LocalDateTime appointmentDate;
 
 }

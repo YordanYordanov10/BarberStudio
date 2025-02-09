@@ -2,16 +2,16 @@ package bg.softuni.barberstudio.Barber.Model;
 
 
 import bg.softuni.barberstudio.Appointment.Model.Appointment;
+import bg.softuni.barberstudio.User.Model.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,15 +23,17 @@ public class Barber {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false)
-    private String name;
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
-    private String description;
+    @Column(name = "clients_count")
+    private int clientsCount;
 
-    private int experience;
+    @Column(name = "user_rating")
+    private BigDecimal userRating;
 
-
-    @OneToMany(mappedBy = "barber", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "barber")
     private List<Appointment> appointments;
 
 

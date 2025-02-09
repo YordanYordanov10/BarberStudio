@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход в Barber Studio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .login-container {
+            max-width: 400px;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 80px;
+        }
+        .btn-professional {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-professional:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container d-flex justify-content-center">
+        <div class="login-container">
+            <h2 class="text-center mb-4">Вход</h2>
+            <form>
+                <div class="mb-3">
+                    <label for="loginUsername" class="form-label">Потребителско име</label>
+                    <input type="text" class="form-control" id="loginUsername" placeholder="Въведете потребителско име">
+                </div>
+                <div class="mb-3">
+                    <label for="loginPassword" class="form-label">Парола</label>
+                    <input type="password" class="form-control" id="loginPassword" placeholder="Въведете парола">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Вход</button>
+            </form>
+
+            <!-- Линк "Забравена парола" -->
+            <div class="text-center mt-3">
+                <a href="#" class="text-decoration-none">Забравена парола?</a>
+            </div>
+
+            <!-- Бутон за регистрация на професионалист -->
+            <div class="text-center mt-4">
+                <p class="mb-2">Нямате акаунт?</p>
+                <a href="/register-user" class="btn btn-outline-secondary w-100">Регистрация</a>
+            </div>
+            <div class="text-center mt-2">
+                <p class="mb-2">Искате да станете професионалист?</p>
+                <a href="/register-master" class="btn btn-professional w-100">Регистрация на професионалист</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

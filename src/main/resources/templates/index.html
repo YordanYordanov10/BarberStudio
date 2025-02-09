@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio Professionals</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Навигация -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Studio Professionals</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#services">Услуги</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#professionals">Професионалисти</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#booking">Резервация</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Контакти</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/login}">Вход</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/register-user}">Регистрация</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Хедър -->
+    <header class="bg-dark text-white text-center py-5">
+        <div class="container">
+            <h1 class="display-4">Добре дошли в Studio Professionals</h1>
+            <p class="lead">Открийте най-добрите фризьори, барбъри и маникюристи на едно място.</p>
+            <a href="#booking" class="btn btn-primary btn-lg mt-3">Резервирайте сега</a>
+        </div>
+    </header>
+
+    <!-- Услуги -->
+    <section id="services" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Нашите услуги</h2>
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Фризьорски услуги</h5>
+                            <p class="card-text">Модерни подстрижки, боядисване и прически за всякакви поводи.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Барбър услуги</h5>
+                            <p class="card-text">Професионално оформяне на брада и традиционно бръснене.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Маникюр и педикюр</h5>
+                            <p class="card-text">Красиви и здрави нокти с професионална грижа.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Професионалисти -->
+    <section id="professionals" class="bg-light py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Нашите професионалисти</h2>
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <img src="https://randomuser.me/api/portraits/men/9.jpg" class="rounded-circle mb-3" alt="Професионалист 1" style="width: 150px;">
+                    <h5>Иван Иванов</h5>
+                    <p>Главен фризьор</p>
+                    <p><strong>Рейтинг:</strong> ★★★★★</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <img src="https://randomuser.me/api/portraits/men/40.jpg" class="rounded-circle mb-3" alt="Професионалист 2" style="width: 150px;">
+                    <h5>Георги Георгиев</h5>
+                    <p>Майстор барбър</p>
+                    <p><strong>Рейтинг:</strong> ★★★★☆</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <img src="https://randomuser.me/api/portraits/women/9.jpg" class="rounded-circle mb-3" alt="Професионалист 3" style="width: 150px;">
+                    <h5>Мария Петрова</h5>
+                    <p>Маникюрист</p>
+                    <p><strong>Рейтинг:</strong> ★★★★☆</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Резервация -->
+    <section id="booking" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Резервирайте час</h2>
+            <form>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Вашето име</label>
+                    <input type="text" class="form-control" id="name" placeholder="Въведете вашето име">
+                </div>
+                <div class="mb-3">
+                    <label for="service" class="form-label">Изберете услуга</label>
+                    <select class="form-select" id="service">
+                        <option>Фризьорски услуги</option>
+                        <option>Барбър услуги</option>
+                        <option>Маникюр и педикюр</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="date" class="form-label">Изберете дата</label>
+                    <input type="date" class="form-control" id="date">
+                </div>
+                <button type="submit" class="btn btn-primary">Резервирайте</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Контакти -->
+    <section id="contact" class="bg-dark text-white py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Контакти</h2>
+            <div class="row text-center">
+                <div class="col-md-6">
+                    <p><strong>Адрес:</strong> гр. София, ул. Примерна 12</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Телефон:</strong> 0888 123 456</p>
+                    <p><strong>Имейл:</strong> info@studioprofessionals.bg</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футър -->
+    <footer class="bg-dark text-white text-center py-3">
+        <p>© 2025 Studio Professionals. Всички права запазени.</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
