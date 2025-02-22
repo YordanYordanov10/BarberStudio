@@ -3,7 +3,6 @@ package bg.softuni.barberstudio.Web;
 import bg.softuni.barberstudio.User.Service.UserService;
 import bg.softuni.barberstudio.Web.Dto.LoginRequest;
 import bg.softuni.barberstudio.Web.Dto.RegisterRequest;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -41,45 +40,58 @@ public class IndexController {
         return modelAndView;
     }
 
-    @PostMapping("/login")
-    public ModelAndView login(@Valid LoginRequest loginRequest, BindingResult bindingResult, HttpSession session){
-
-        if(bindingResult.hasErrors()){
-            return new ModelAndView("login");
-        }
-
-        //TODO:
-
-        return new ModelAndView("redirect:/home");
-    }
 
 
-    @GetMapping("/register-user")
+    @GetMapping("/register")
     public ModelAndView getRegisterPage(){
 
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("register-user");
+        modelAndView.setViewName("register");
         modelAndView.addObject("registerRequest", new RegisterRequest());
 
         return modelAndView;
     }
 
-    @PostMapping("/register-user")
-    public ModelAndView registerUser(@Valid RegisterRequest registerRequest, BindingResult bindingResult){
+    @PostMapping("/register")
+    public ModelAndView registerUser(@Valid @ModelAttribute("registerRequest") RegisterRequest registerRequest,
+                                     BindingResult bindingResult) {
 
-       if(bindingResult.hasErrors()){
-           return new ModelAndView("register-user");
-       }
+        // Проверка дали паролите съвпадат
+        if (!registerRequest.isPasswordsMatch()) {
+            bindingResult.rejectValue("confirmPassword", "error.confirmPassword", "Passwords must match.");
+        }
 
-       userService.register(registerRequest);
+        // Ако има грешки, върни същата страница със запазени данни и грешки
+        if (bindingResult.hasErrors()) {
+            ModelAndView modelAndView = new ModelAndView("register");
+            modelAndView.addObject("registerRequest", registerRequest);
+            modelAndView.addObject("org.springframework.validation.BindingResult.registerRequest", bindingResult);
+            return modelAndView;
+        }
 
-
+        // Ако няма грешки, регистрирай потребителя
+        userService.register(registerRequest);
         return new ModelAndView("redirect:/login");
     }
 
-    @GetMapping("/register-master")
-    public String getRegisterMasterPage(){
+    @GetMapping("/contact")
+    public ModelAndView getContactPage(){
 
-        return "register-master";
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("contact");
+
+        return modelAndView;
     }
+
+    @GetMapping("/services")
+    public ModelAndView getServicesPage(){
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("services");
+
+        return modelAndView;
+    }
+
+
+
 }

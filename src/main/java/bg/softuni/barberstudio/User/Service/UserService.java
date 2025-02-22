@@ -1,6 +1,7 @@
 package bg.softuni.barberstudio.User.Service;
 
 import bg.softuni.barberstudio.Exception.DomainException;
+import bg.softuni.barberstudio.Security.AuthenticationDetails;
 import bg.softuni.barberstudio.User.Model.User;
 import bg.softuni.barberstudio.User.Repository.UserRepository;
 import bg.softuni.barberstudio.Web.Dto.LoginRequest;
@@ -8,13 +9,16 @@ import bg.softuni.barberstudio.Web.Dto.RegisterRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -65,6 +69,13 @@ public class UserService {
                 .build();
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new DomainException("User with this username does not exist"));
+
+        return new AuthenticationDetails(user.getId(),username,user.getPassword(),user.getRole(),user.isActive);
+    }
 }
 
 

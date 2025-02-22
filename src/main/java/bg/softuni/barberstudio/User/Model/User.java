@@ -20,6 +20,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class User {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -38,6 +39,8 @@ public class User {
     private String lastName;
 
     private String profilePicture;
+
+    public boolean isActive;
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
