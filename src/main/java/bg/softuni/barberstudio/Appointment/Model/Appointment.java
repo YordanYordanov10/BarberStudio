@@ -19,7 +19,6 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "appointments")
 public class Appointment {
 
     @Id
@@ -34,7 +33,7 @@ public class Appointment {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @Column(name = "appointment_date")
+
     private LocalDateTime appointmentDate;
 
 }

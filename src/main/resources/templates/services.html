@@ -14,26 +14,9 @@
 </head>
 
 <body style="font-family: 'Akaya Kanadaka', serif;background: radial-gradient(#9be6db 32%, white), #9be9dd;">
-    <nav class="navbar navbar-expand-lg bg-dark navbar-dark"
-        style="font-size: 27px;backdrop-filter: opacity(0.70);-webkit-backdrop-filter: opacity(0.70);height: 50px;margin: 0px;position: sticky;overflow: visible;">
-        <div class="container"><a class="navbar-brand" href="#"
-                style="font-size: 30px;height: 55px;margin: 0px;padding: 0px 0px;">Barber Studio</a><button
-                data-bs-toggle="collapse" data-bs-target="#navbarNav" class="navbar-toggler" type="button"><span
-                    class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse fs-2 ps- ms-" id="navbarNav"
-                style="position: relative;padding: 0px;border-width: 0px;margin: 0px;height: 64px;filter: brightness(100%) contrast(100%) grayscale(0%) invert(0%) saturate(0%);">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link pe- me- ms-" href="#services">Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#professionals">Barbers</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#booking">Reservation</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
-                    <li class="nav-item"><a class="nav-link mb- pb- mt- pe- py- my- ms-" href="/login"
-                            style="background: #212527;height: 57px;">Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+
+<nav th:replace="~{fragments/commons::nav}"></nav>
+
     <header class="text-center text-white bg-dark py-5 pt- mt-"
         style="background: radial-gradient(#1ddec1 11%, white), #1ddec1;">
         <div class="container-fluid pb- mb- mt- pt- mb-0 mt-0"

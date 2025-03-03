@@ -3,19 +3,25 @@ package bg.softuni.barberstudio.User.Service;
 import bg.softuni.barberstudio.Exception.DomainException;
 import bg.softuni.barberstudio.Security.AuthenticationDetails;
 import bg.softuni.barberstudio.User.Model.User;
+import bg.softuni.barberstudio.User.Model.UserRole;
 import bg.softuni.barberstudio.User.Repository.UserRepository;
 import bg.softuni.barberstudio.Web.Dto.LoginRequest;
 import bg.softuni.barberstudio.Web.Dto.RegisterRequest;
+import bg.softuni.barberstudio.Web.Dto.UserEditRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -27,24 +33,6 @@ public class UserService implements UserDetailsService {
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-    }
-
-    public User login(LoginRequest loginRequest){
-
-        Optional<User> userOptional = userRepository.findByUsername(loginRequest.getUsername());
-
-        if(userOptional.isEmpty()){
-            throw new DomainException("Username or Password is incorrect");
-        }
-
-        User user = userOptional.get();
-
-        if(!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())){
-            throw new DomainException("Username or Password is incorrect");
-        }
-
-
-        return user;
     }
 
 
@@ -66,6 +54,8 @@ public class UserService implements UserDetailsService {
                 .username(registerRequest.getUsername())
                 .email(registerRequest.getEmail())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
+                .isActive(true)
+                .role(UserRole.USER)
                 .build();
     }
 
@@ -75,6 +65,43 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new DomainException("User with this username does not exist"));
 
         return new AuthenticationDetails(user.getId(),username,user.getPassword(),user.getRole(),user.isActive);
+    }
+
+    public User getById(UUID id) {
+
+        return userRepository.findById(id).orElseThrow(() -> new DomainException("User with this username does not exist"));
+    }
+
+    public void editUserDetails(UUID id, UserEditRequest userEditRequest) {
+
+        User user = getById(id);
+
+        user.setFirstName(userEditRequest.getFirstName());
+        user.setLastName(userEditRequest.getLastName());
+        user.setProfilePicture(userEditRequest.getProfilePictureUrl());
+
+        userRepository.save(user);
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @CacheEvict(value = "users", allEntries = true)
+    public void updateUserRole(UUID userId, String role) {
+
+       User user = getById(userId);
+       user.setRole(UserRole.valueOf(role));
+       userRepository.save(user);
+
+    }
+
+    @CacheEvict(value = "users", allEntries = true)
+    public void updateUserStatus(UUID userId) {
+
+       User user = getById(userId);
+       user.setActive(!user.isActive());
+       userRepository.save(user);
     }
 }
 

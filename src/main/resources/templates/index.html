@@ -19,25 +19,15 @@
 </head>
 
 <body style="font-family: 'Akaya Kanadaka', serif;">
-    <nav class="navbar navbar-expand-lg bg-dark navbar-dark" style="font-size: 27px;backdrop-filter: opacity(0.70);-webkit-backdrop-filter: opacity(0.70);height: 50px;margin: 0px;position: sticky;overflow: visible;">
-        <div class="container"><a class="navbar-brand" href="#" style="font-size: 30px;height: 55px;margin: 0px;padding: 0px 0px;">Barber Studio</a><button data-bs-toggle="collapse" data-bs-target="#navbarNav" class="navbar-toggler" type="button"><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse fs-2 ps- ms-" id="navbarNav" style="position: relative;padding: 0px;border-width: 0px;margin: 0px;height: 64px;">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link pe- me- ms-" th:href="@{services}">Services</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/barbers}">Barbers</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/booking}">Reservation</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/contact}">Contact Us</a></li>
-                    <li class="nav-item"><a class="nav-link mb- pb- mt- pe- py- my- ms-" th:href="@{/login}" style="background: #212527;height: 57px;">Login</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/register}">Register</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+<nav th:replace="~{fragments/commons::nav}"></nav>
+
     <header class="text-center text-white bg-dark py-5 pt- mt-" style="background: radial-gradient(#1ddec1 11%, white), #1ddec1;">
         <div class="container-fluid pb- mb- mt- pt-" style="background: url(/css/img/pexels-nickoloui-1319459.jpg) top / cover no-repeat;font-size: 16px;height: 550.2px;margin: 5px;padding: 140px;">
             <h1 class="display-4" style="font-size: 85px;">Welcome to Barber Studio&nbsp;</h1>
-            <p class="lead">Открийте най-добрите фризьори, барбъри и маникюристи на едно място.</p><a class="btn btn-primary btn-lg mt-3" role="button" href="#booking" style="background: #1ddec1;">Reservation</a>
+            <h2 th:if="${isLoggedIn}" th:text="|Hello, ${user.username}!|" class="mt-3"></h2>
+            <p class="lead">Открийте най-добрите фризьори, барбъри и маникюристи на едно място.</p><a class="btn btn-primary btn-lg mt-3" role="button" th:href="@{/booking}" style="background: #1ddec1;">Booking</a>
         </div>
+
     </header>
     <div class="container py-4 py-xl-5">
         <div class="row mb-5" style="background: linear-gradient(360deg, #1ddec1 62%, white), #1ddec1;">

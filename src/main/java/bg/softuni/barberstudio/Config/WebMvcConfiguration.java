@@ -20,12 +20,13 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/","/register","/contact","/services").permitAll()
                         .requestMatchers("/users").hasRole("ADMIN")
+                        .requestMatchers("/barbers").hasRole("BARBER")
                         .anyRequest().authenticated()
         )
                 .formLogin(form -> form.loginPage("/login")
 //                       .usernameParameter("username") -  - taken from html form, if is different need to change id
 //                       .passwordParameter("password") - taken from html form
-                         .defaultSuccessUrl("/home") // after login where to go
+                         .defaultSuccessUrl("/",true) // after login where to go
                          .failureForwardUrl("/login?error") // show error if login fail
                          .permitAll()
 

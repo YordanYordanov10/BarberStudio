@@ -1,10 +1,14 @@
 package bg.softuni.barberstudio.Web;
 
+import bg.softuni.barberstudio.Security.AuthenticationDetails;
+import bg.softuni.barberstudio.User.Model.User;
 import bg.softuni.barberstudio.User.Service.UserService;
 import bg.softuni.barberstudio.Web.Dto.LoginRequest;
 import bg.softuni.barberstudio.Web.Dto.RegisterRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,9 +27,18 @@ public class IndexController {
     }
 
     @GetMapping("/")
-    public String getIndexPage(){
+    public ModelAndView home(@AuthenticationPrincipal AuthenticationDetails authenticationDetails) {
 
-        return "index";
+        ModelAndView modelAndView = new ModelAndView("/index");
+
+        if (authenticationDetails != null) {
+            User user = userService.getById(authenticationDetails.getId());
+            modelAndView.addObject("user", user);
+            modelAndView.addObject("isLoggedIn", true);
+        } else {
+            modelAndView.addObject("isLoggedIn", false);
+        }
+        return modelAndView;
     }
 
 
