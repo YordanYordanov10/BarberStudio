@@ -103,6 +103,11 @@ public class UserService implements UserDetailsService {
        user.setActive(!user.isActive());
        userRepository.save(user);
     }
+
+    public List<User> findByUserRole() {
+
+        return  userRepository.findByRole(UserRole.BARBER);
+    }
 }
 
 
