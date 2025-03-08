@@ -2,7 +2,6 @@ package bg.softuni.barberstudio.User.Model;
 
 
 import bg.softuni.barberstudio.Appointment.Model.Appointment;
-import bg.softuni.barberstudio.Barber.Model.Barber;
 import bg.softuni.barberstudio.Product.Model.Product;
 import bg.softuni.barberstudio.Service.Model.Service;
 import jakarta.persistence.*;
@@ -43,17 +42,17 @@ public class User {
     public boolean isActive;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private UserRole role;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Service> services;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "barber", fetch = FetchType.EAGER)
     private List<Appointment> appointments;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Product> products;
 
-    @OneToOne(mappedBy = "user")
-    private Barber barber;
+
 }

@@ -57,31 +57,18 @@
         </div>
     </div>
 
-    <section class="bg-light py-5" id="professionals">
-        <div class="container" style="background: rgba(29,222,193,0.14);border-radius: 20px;">
+    <section class="bg-light py-5" id="professionals" >
+        <div class="container" style="background: rgba(29,222,193,0.14);border-radius: 20px;" >
             <h2 class="text-center mb-5">Our Barbers&nbsp;<br><br></h2>
-            <div class="row">
-                <div class="col-md-4 text-center"><img class="rounded-circle mb-3" src="https://randomuser.me/api/portraits/men/9.jpg" alt="Професионалист 1" style="width:150px;">
-                    <h5>Ivan Ivanov</h5>
-                    <p>Barber&nbsp;</p>
+            <div class="row" >
+                <div class="col-md-4 text-center" th:each="barber : ${barbers}" ><img th:src="${barber.getProfilePicture()}" class="rounded-circle mb-3" src="https://randomuser.me/api/portraits/men/9.jpg" alt="Професионалист 1" style="width:150px;">
+                    <h5 th:text="${barber.firstName}">Ivan Ivanov</h5>
+                    <p th:text="${barber.username}">Barber&nbsp;</p>
                     <div class="d-flex flex-column align-items-xxl-center" style="padding: 15px;"><button class="btn btn-primary btn-lg fs-3" data-bss-hover-animate="shake" type="button" style="background: #1ddec1;border-color: #1ddec1;border-radius: 25px;margin: 10px;">Prices</button>
                         <p style="margin-top: 40px;font-size: 35px;">Take your adventure</p><button class="btn btn-primary btn-lg fs-3" data-bss-hover-animate="tada" type="button" style="background: #1ddec1;border-color: #1ddec1;border-radius: 25px;margin: 0px;">Booking</button>
                     </div>
                 </div>
-                <div class="col-md-4 text-center"><img class="rounded-circle mb-3" src="https://randomuser.me/api/portraits/men/9.jpg" alt="Професионалист 1" style="width:150px;">
-                    <h5>Ivan Ivanov</h5>
-                    <p>Barber&nbsp;</p>
-                    <div class="d-flex flex-column align-items-xxl-center" style="padding: 15px;"><button class="btn btn-primary btn-lg fs-3" data-bss-hover-animate="shake" type="button" style="background: #1ddec1;border-color: #1ddec1;border-radius: 25px;margin: 10px;">Prices</button>
-                        <p style="margin-top: 40px;font-size: 35px;">Take your adventure</p><button class="btn btn-primary btn-lg fs-3" data-bss-hover-animate="tada" type="button" style="background: #1ddec1;border-color: #1ddec1;border-radius: 25px;margin: 0px;">Booking</button>
-                    </div>
-                </div>
-                <div class="col-md-4 text-center"><img class="rounded-circle mb-3" src="https://randomuser.me/api/portraits/men/9.jpg" alt="Професионалист 1" style="width:150px;">
-                    <h5>Ivan Ivanov</h5>
-                    <p>Barber&nbsp;</p>
-                    <div class="d-flex flex-column align-items-xxl-center" style="padding: 15px;"><button class="btn btn-primary btn-lg fs-3" data-bss-hover-animate="shake" type="button" style="background: #1ddec1;border-color: #1ddec1;border-radius: 25px;margin: 10px;">Prices</button>
-                        <p style="margin-top: 40px;font-size: 35px;">Take your adventure</p><button class="btn btn-primary btn-lg fs-3" data-bss-hover-animate="tada" type="button" style="background: #1ddec1;border-color: #1ddec1;border-radius: 25px;margin: 0px;">Booking</button>
-                    </div>
-                </div>
+
             </div>
         </div>
     </section>

@@ -108,6 +108,9 @@ public class UserService implements UserDetailsService {
 
         return  userRepository.findByRole(UserRole.BARBER);
     }
+
+
+
 }
 
 

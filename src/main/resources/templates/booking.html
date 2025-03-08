@@ -11,71 +11,65 @@
         .available { background-color: #6bc49a; color: white; }
     </style>
 </head>
-
-
 <body style="font-family: 'Akaya Kanadaka', serif;">
-    <nav th:replace="~{fragments/commons::nav}"></nav>
+<nav th:replace="~{fragments/commons::nav}"></nav>
 
-    <header class="text-center text-white bg-dark py-5 pt- mt-" style="background: radial-gradient(#1ddec1 11%, white), #1ddec1;">
+<header class="text-center text-white bg-dark py-5 pt- mt-" style="background: radial-gradient(#1ddec1 11%, white), #1ddec1;">
     <div class="container-fluid pb- mb- mt- pt-" style="background: url(/css/img/pexels-nickoloui-1319459.jpg) top / cover no-repeat;font-size: 16px;height: 200px;margin: 5px;padding: 10px;">
         <h1 class="display-4" style="font-size: 85px;">Booking Panel</h1>
         <p class="lead"></p><a class="btn btn-primary btn-lg mt-3" role="button" th:href="@{/}" style="background: #1ddec1;">HOME</a>
     </div>
-    </header>
-    <div class="container mt-5">
-        <h2 class="text-center">Book an Appointment</h2>
-        
-        <!-- Избор на бръснар -->
-        <form method="get" action="/booking">
-            <div class="mb-3">
-                <label for="barber" class="form-label">Select Barber:</label>
-                <select id="barber" name="barberId" class="form-select">
-                    <option th:each="barber : ${barbers}" 
-                            th:value="${barber.username}"
-                            th:text="${barber.username}"
-                            th:selected="${barber.id == selectedBarberId}">
-                    </option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="date" class="form-label">Select Date:</label>
-                <input type="date" id="date" name="date" class="form-control" th:value="${selectedDate}">
-            </div>
-            <button type="submit" class="btn btn-primary">Load Schedule</button>
-        </form>
+</header>
 
-        <!-- График с часовете -->
-        <h4 class="mt-4">Avail++
+<div class="container mt-5">
+    <h2 class="text-center">Book an Appointment</h2>
 
-            +
-            +           ];jyable Appointments</h4>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Time</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="appointment : ${appointments}">
-                    <td th:text="${appointment.time}"></td>
-                    <td th:class="${appointment.booked ? 'booked' : 'available'}" 
-                        th:t
+    <!-- Barber and Date Selection Form -->
+    <form method="get" th:action="@{/booking}">
+        <div class="mb-3">
+            <label for="barber" class="form-label">Select Barber:</label>
+            <select id="barber" name="barberId" class="form-select">
+                <option th:each="barber : ${barbers}"
+                        th:value="${barber.id}"
+                        th:text="${barber.username}"
+                        th:selected="${barber.id == barberId}">
+                </option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="date" class="form-label">Select Date:</label>
+            <input type="date" id="date" name="date" class="form-control" th:value="${date}">
+        </div>
+        <button type="submit" class="btn btn-primary">Load Schedule</button>
+    </form>
 
-
-
-                        ext="${appointment.booked ? 'Booked' : 'Available'}">
-                    </td>
-                    <td>
-                        <form method="post" th:action="@{/booking/book}" th:if="${!appointment.booked}">
-                            <input type="hidden" name="appointmentId" th:value="${appointment.id}">
-                            <button type="submit" class="btn btn-success">Book</button>
-                        </form>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <!-- Available Slots Table -->
+    <h4 class="mt-4">Available Appointments</h4>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Time</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="slot : ${slots}">
+            <td th:text="${slot.key}"></td>
+            <td th:class="${slot.value ? 'available' : 'booked'}">
+                <span th:text="${slot.value ? 'Available' : 'Booked'}"></span>
+            </td>
+            <td>
+                <form method="post" th:action="@{/booking}" th:if="${slot.value}">
+                    <input type="hidden" name="timeSlot" th:value="${slot.key}">
+                    <input type="hidden" name="barberId" th:value="${barberId}">
+                    <input type="hidden" name="date" th:value="${date}">
+                    <button type="submit" class="btn btn-success">Book</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

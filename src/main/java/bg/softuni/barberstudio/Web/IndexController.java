@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+
 
 @Controller
 public class IndexController {
@@ -29,7 +31,10 @@ public class IndexController {
     @GetMapping("/")
     public ModelAndView home(@AuthenticationPrincipal AuthenticationDetails authenticationDetails) {
 
+        List<User> barbers = userService.findByUserRole();
+
         ModelAndView modelAndView = new ModelAndView("/index");
+        modelAndView.addObject("barbers", barbers);
 
         if (authenticationDetails != null) {
             User user = userService.getById(authenticationDetails.getId());
@@ -69,12 +74,11 @@ public class IndexController {
     public ModelAndView registerUser(@Valid @ModelAttribute("registerRequest") RegisterRequest registerRequest,
                                      BindingResult bindingResult) {
 
-        // Проверка дали паролите съвпадат
+
         if (!registerRequest.isPasswordsMatch()) {
             bindingResult.rejectValue("confirmPassword", "error.confirmPassword", "Passwords must match.");
         }
 
-        // Ако има грешки, върни същата страница със запазени данни и грешки
         if (bindingResult.hasErrors()) {
             ModelAndView modelAndView = new ModelAndView("register");
             modelAndView.addObject("registerRequest", registerRequest);
@@ -82,7 +86,6 @@ public class IndexController {
             return modelAndView;
         }
 
-        // Ако няма грешки, регистрирай потребителя
         userService.register(registerRequest);
         return new ModelAndView("redirect:/login");
     }
