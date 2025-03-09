@@ -1,5 +1,7 @@
 package bg.softuni.barberstudio.Web;
 
+import bg.softuni.barberstudio.Appointment.Model.Appointment;
+import bg.softuni.barberstudio.Appointment.Service.AppointmentService;
 import bg.softuni.barberstudio.Security.AuthenticationDetails;
 import bg.softuni.barberstudio.User.Model.User;
 import bg.softuni.barberstudio.User.Model.UserRole;
@@ -22,10 +24,12 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService userService;
+    private final AppointmentService appointmentService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, AppointmentService appointmentService) {
         this.userService = userService;
+        this.appointmentService = appointmentService;
     }
 
     @GetMapping("/profile")
@@ -33,9 +37,12 @@ public class UserController {
 
         User user = userService.getById(authenticationDetails.getId());
 
+        List<Appointment> appointments = appointmentService.getAppointmentsByUser(authenticationDetails.getId());
+
         ModelAndView modelAndView = new ModelAndView("profile");
         modelAndView.addObject("user", user);
         modelAndView.addObject("userEditRequest", DtoMapper.mapUserToUserEditRequest(user));
+        modelAndView.addObject("appointments", appointments);
 
 
         return modelAndView;

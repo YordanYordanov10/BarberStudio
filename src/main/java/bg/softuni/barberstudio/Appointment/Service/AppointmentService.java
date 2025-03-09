@@ -29,9 +29,6 @@ public class AppointmentService {
     public Map<String, Boolean> getAvailableSlots(LocalDate date, UUID barberId) {
         User barber = userService.getById(barberId);
 
-        System.out.println("Barber: " + barber.getId());
-        System.out.println("Requested date: " + date);
-
         List<Appointment> appointments = appointmentRepository.findByAppointmentDateAndBarber(date, barber);
 
         System.out.println("Appointments found: " + appointments.size());
@@ -87,6 +84,20 @@ public class AppointmentService {
         return appointmentRepository.findByBarber(barber);
     }
 
+    public List<Appointment> getAppointmentsByUser(UUID userId) {
+
+        return appointmentRepository.findByUserId(userId);
+    }
+
+
+    public void cancelAppointmentByUserId(UUID userId, UUID appointmentId) {
+
+        List<Appointment> appointments = getAppointmentsByUser(userId);
+
+        Appointment appointment = appointments.stream().filter(a -> a.getId().equals(appointmentId)).findFirst().orElseThrow(() -> new DomainException("No such appointment"));
+
+        appointmentRepository.delete(appointment);
+    }
 }
 
 

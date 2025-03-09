@@ -18,4 +18,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
     List<Appointment> findByBarber(User barber);
 
     Optional<Appointment> findByCustomerNameAndAppointmentDateAndBarberAndTimeSlot(String customerName, LocalDate date,User barber, String timeSlot);
+
+    List<Appointment> findByUserId(UUID userId);
+
+    void deleteAppointmentById(UUID appointmentId);
 }
