@@ -2,24 +2,29 @@ package bg.softuni.barberstudio.Appointment.Service;
 
 import bg.softuni.barberstudio.Appointment.Model.Appointment;
 import bg.softuni.barberstudio.Appointment.Repository.AppointmentRepository;
+import bg.softuni.barberstudio.Email.Service.NotificationService;
 import bg.softuni.barberstudio.Exception.DomainException;
+import bg.softuni.barberstudio.Service.Service.BarberServiceService;
 import bg.softuni.barberstudio.User.Model.User;
 import bg.softuni.barberstudio.User.Service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
     private final UserService userService;
+    private final NotificationService notificationService;
 
-    public AppointmentService(AppointmentRepository appointmentRepository, UserService userService) {
+
+    public AppointmentService(AppointmentRepository appointmentRepository, UserService userService, NotificationService notificationService, BarberServiceService service) {
         this.appointmentRepository = appointmentRepository;
         this.userService = userService;
+        this.notificationService = notificationService;
+
     }
 
     private static final List<String> TIME_SLOTS = Arrays.asList(
@@ -36,7 +41,7 @@ public class AppointmentService {
 
         List<String> bookedSlots = appointments.stream()
                 .map(Appointment::getTimeSlot)
-                .collect(Collectors.toList());
+                .toList();
 
         Map<String, Boolean> slots = new LinkedHashMap<>();
         for (String slot : TIME_SLOTS) {
@@ -71,9 +76,9 @@ public class AppointmentService {
         appointment.setUser(user);
         appointment.setBarber(barber);
 
-
-
         appointmentRepository.save(appointment);
+
+        notificationService.sentNotification(userId,barberId,barber.getUsername(),barber.getEmail(),user.getEmail(),date, timeSlot);
     }
 
 

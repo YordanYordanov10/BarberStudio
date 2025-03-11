@@ -3,9 +3,11 @@ package bg.softuni.barberstudio.Web;
 import bg.softuni.barberstudio.Appointment.Model.Appointment;
 import bg.softuni.barberstudio.Appointment.Service.AppointmentService;
 import bg.softuni.barberstudio.Security.AuthenticationDetails;
+import bg.softuni.barberstudio.Service.Service.BarberServiceService;
 import bg.softuni.barberstudio.User.Model.User;
 import bg.softuni.barberstudio.User.Model.UserRole;
 import bg.softuni.barberstudio.User.Service.UserService;
+import bg.softuni.barberstudio.Web.Dto.BarberServiceCreate;
 import bg.softuni.barberstudio.Web.Dto.UserEditRequest;
 import bg.softuni.barberstudio.untility.DtoMapper;
 import jakarta.validation.Valid;
@@ -25,11 +27,13 @@ public class UserController {
 
     private final UserService userService;
     private final AppointmentService appointmentService;
+    private final BarberServiceService barberServiceService;
 
     @Autowired
-    public UserController(UserService userService, AppointmentService appointmentService) {
+    public UserController(UserService userService, AppointmentService appointmentService, BarberServiceService barberServiceService) {
         this.userService = userService;
         this.appointmentService = appointmentService;
+        this.barberServiceService = barberServiceService;
     }
 
     @GetMapping("/profile")
@@ -65,6 +69,23 @@ public class UserController {
         return new ModelAndView("redirect:/profile");
 
     }
+
+    @GetMapping("/barber-panel")
+    @PreAuthorize("hasRole('BARBER')")
+    public ModelAndView getBarberPanel(@AuthenticationPrincipal AuthenticationDetails authenticationDetails){
+
+        User user  = userService.getById(authenticationDetails.getId());
+
+
+        ModelAndView modelAndView = new ModelAndView("barber-panel");
+        modelAndView.addObject("barberServiceCreate", new BarberServiceCreate());
+
+
+
+        return modelAndView;
+    }
+
+
 
     @GetMapping("/users")
     @PreAuthorize("hasRole('ADMIN')")

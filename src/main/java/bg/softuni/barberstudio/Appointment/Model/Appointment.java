@@ -2,7 +2,6 @@ package bg.softuni.barberstudio.Appointment.Model;
 
 
 
-import bg.softuni.barberstudio.Service.Model.Service;
 import bg.softuni.barberstudio.User.Model.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,7 +11,6 @@ import lombok.Setter;
 
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity

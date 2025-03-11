@@ -99,14 +99,7 @@ public class IndexController {
         return modelAndView;
     }
 
-    @GetMapping("/services")
-    public ModelAndView getServicesPage(){
 
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("services");
-
-        return modelAndView;
-    }
 
 
 

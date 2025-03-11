@@ -17,7 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "services")
-public class Service {
+public class BarberService {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -29,12 +29,9 @@ public class Service {
 
     private double price;
 
-    private int duration;
-
     @ManyToOne
-    private User user;
-
-
+    @JoinColumn(name = "user_id",referencedColumnName = "id", nullable = false)
+    private User barberId;
 
 
 }
