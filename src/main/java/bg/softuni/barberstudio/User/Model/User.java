@@ -2,7 +2,7 @@ package bg.softuni.barberstudio.User.Model;
 
 
 import bg.softuni.barberstudio.Appointment.Model.Appointment;
-import bg.softuni.barberstudio.Product.Model.Product;
+import bg.softuni.barberstudio.Comment.Model.Comment;
 import bg.softuni.barberstudio.Service.Model.BarberService;
 import jakarta.persistence.*;
 import lombok.*;
@@ -51,8 +51,8 @@ public class User {
     @OneToMany(mappedBy = "barber", fetch = FetchType.EAGER)
     private List<Appointment> appointments;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private List<Product> products;
+    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
+    private List<Comment> comments;
 
 
 }

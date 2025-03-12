@@ -6,6 +6,7 @@ import bg.softuni.barberstudio.User.Model.User;
 import bg.softuni.barberstudio.Web.Dto.BarberServiceCreate;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -26,9 +27,10 @@ public class BarberServiceService {
         barberService.setPrice(barberServiceCreate.getPrice());
         barberService.setBarberId(barber);
 
-        
-
-
         barberServiceRepository.save(barberService);
+    }
+
+    public List<BarberService> getAllServices(UUID id) {
+        return barberServiceRepository.findAll();
     }
 }

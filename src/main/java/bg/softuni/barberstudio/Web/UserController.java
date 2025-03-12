@@ -2,12 +2,16 @@ package bg.softuni.barberstudio.Web;
 
 import bg.softuni.barberstudio.Appointment.Model.Appointment;
 import bg.softuni.barberstudio.Appointment.Service.AppointmentService;
+import bg.softuni.barberstudio.Comment.Model.Comment;
+import bg.softuni.barberstudio.Comment.Service.CommentService;
 import bg.softuni.barberstudio.Security.AuthenticationDetails;
+import bg.softuni.barberstudio.Service.Model.BarberService;
 import bg.softuni.barberstudio.Service.Service.BarberServiceService;
 import bg.softuni.barberstudio.User.Model.User;
 import bg.softuni.barberstudio.User.Model.UserRole;
 import bg.softuni.barberstudio.User.Service.UserService;
 import bg.softuni.barberstudio.Web.Dto.BarberServiceCreate;
+import bg.softuni.barberstudio.Web.Dto.CommentCreateRequest;
 import bg.softuni.barberstudio.Web.Dto.UserEditRequest;
 import bg.softuni.barberstudio.untility.DtoMapper;
 import jakarta.validation.Valid;
@@ -28,12 +32,14 @@ public class UserController {
     private final UserService userService;
     private final AppointmentService appointmentService;
     private final BarberServiceService barberServiceService;
+    private final CommentService commentService;
 
     @Autowired
-    public UserController(UserService userService, AppointmentService appointmentService, BarberServiceService barberServiceService) {
+    public UserController(UserService userService, AppointmentService appointmentService, BarberServiceService barberServiceService, CommentService commentService) {
         this.userService = userService;
         this.appointmentService = appointmentService;
         this.barberServiceService = barberServiceService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/profile")
@@ -85,7 +91,23 @@ public class UserController {
         return modelAndView;
     }
 
+    @GetMapping("/barber/{id}")
+    public ModelAndView getBarberPage(@PathVariable("id") UUID id, @AuthenticationPrincipal AuthenticationDetails authenticationDetails) {
 
+        User user = userService.getById(authenticationDetails.getId());
+        User barber = userService.getById(id);
+        List<BarberService> services = barberServiceService.getAllServices(id);
+        List<Comment> comments = commentService.getAllComments();
+
+        ModelAndView modelAndView = new ModelAndView("barber");
+        modelAndView.addObject("barber", barber);
+        modelAndView.addObject("services", services);
+        modelAndView.addObject("commentCreateRequest", new CommentCreateRequest());
+        modelAndView.addObject("comments", comments);
+        modelAndView.addObject("user",user);
+
+        return modelAndView;
+    }
 
     @GetMapping("/users")
     @PreAuthorize("hasRole('ADMIN')")
