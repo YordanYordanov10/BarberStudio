@@ -10,6 +10,7 @@ import bg.softuni.barberstudio.Service.Service.BarberServiceService;
 import bg.softuni.barberstudio.User.Model.User;
 import bg.softuni.barberstudio.User.Model.UserRole;
 import bg.softuni.barberstudio.User.Service.UserService;
+import bg.softuni.barberstudio.Web.Dto.BarberCreateProduct;
 import bg.softuni.barberstudio.Web.Dto.BarberServiceCreate;
 import bg.softuni.barberstudio.Web.Dto.CommentCreateRequest;
 import bg.softuni.barberstudio.Web.Dto.UserEditRequest;
@@ -84,7 +85,9 @@ public class UserController {
 
 
         ModelAndView modelAndView = new ModelAndView("barber-panel");
+        modelAndView.addObject("user",user);
         modelAndView.addObject("barberServiceCreate", new BarberServiceCreate());
+        modelAndView.addObject("barberCreateProduct", new BarberCreateProduct());
 
 
 

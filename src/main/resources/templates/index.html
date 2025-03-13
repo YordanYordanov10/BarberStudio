@@ -109,10 +109,9 @@
                         <p class="fs-5" th:text="${testimonial.comment}"></p>
 
                         <!-- User Name -->
-                        <p class="fw-bold mb-1" th:text="'— ' + ${testimonial.user.username}"></p>
+                        <p class="fw-bold mb-1" th:text="'— ' + ${testimonial.author.username}"></p>
 
-                        <!-- Optional: User Role or Additional Info -->
-                        <small class="text-muted" th:text="${testimonial.user.role}"></small>
+
                     </div>
                 </div>
             </div>
