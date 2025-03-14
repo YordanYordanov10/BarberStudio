@@ -25,7 +25,7 @@
     <div class="collapse navbar-collapse fs-2 ps- ms-" id="navbarNav" style="position: relative;padding: 0px;border-width: 0px;margin: 0px;height: 64px;">
       <ul class="navbar-nav ms-auto">
 
-        <li class="nav-item" sec:authorize="hasRole('ROLE_BARBER')" ><a class="nav-link pe- me- ms-" th:href="@{barber-panel}">Barber Menu</a></li>
+        <li class="nav-item" sec:authorize="hasRole('ROLE_BARBER')" ><a class="nav-link pe- me- ms-" th:href="@{barber-panel}">Barber-Panel</a></li>
         <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')" ><a class="nav-link pe- me- ms-" th:href="@{users}">Users</a></li>
         <li class="nav-item"><a class="nav-link pe- me- ms-" th:href="@{services}">Services</a></li>
         <li class="nav-item"><a class="nav-link" th:href="@{/booking}">Booking</a></li>

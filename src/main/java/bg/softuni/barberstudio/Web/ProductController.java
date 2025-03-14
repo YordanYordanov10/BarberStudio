@@ -5,13 +5,21 @@ import bg.softuni.barberstudio.Security.AuthenticationDetails;
 import bg.softuni.barberstudio.User.Model.User;
 import bg.softuni.barberstudio.User.Service.UserService;
 import bg.softuni.barberstudio.Web.Dto.BarberCreateProduct;
+import bg.softuni.barberstudio.Web.Dto.BarberEditProduct;
+import bg.softuni.barberstudio.Web.Dto.BarberServiceEdit;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.UUID;
 
 @Controller
 public class ProductController {
@@ -36,6 +44,34 @@ public class ProductController {
         }
 
         productService.createNewProduct(barberCreateProduct, barber);
+
+        return "redirect:/barber-panel";
+    }
+
+    @PutMapping("/barber-panel/edit-product/{productId}")
+    @PreAuthorize("hasRole('BARBER')")
+    public ModelAndView editBarberProduct(@AuthenticationPrincipal AuthenticationDetails authenticationDetails, @Valid BarberEditProduct barberEditProduct, @PathVariable("productId") UUID productId, BindingResult bindingResult){
+
+        User barber = userService.getById(authenticationDetails.getId());
+
+
+        if(bindingResult.hasErrors()){
+            ModelAndView modelAndView = new ModelAndView("barber-panel");
+            modelAndView.addObject("barberEditProduct",barberEditProduct);
+            return modelAndView;
+        }
+        productService.editBarberProductDetail(barberEditProduct,productId);
+
+        return new ModelAndView("redirect:/barber-panel");
+    }
+
+    @DeleteMapping("/barber-panel/delete-product/{productId}")
+    @PreAuthorize("hasRole('BARBER')")
+    public String deleteProduct(@AuthenticationPrincipal AuthenticationDetails authenticationDetails, @PathVariable("productId") UUID productId) {
+
+        User barber = userService.getById(authenticationDetails.getId());
+
+        productService.deleteProductByProductId(productId);
 
         return "redirect:/barber-panel";
     }

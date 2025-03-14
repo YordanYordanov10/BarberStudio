@@ -8,7 +8,7 @@ import lombok.Data;
 import org.hibernate.validator.constraints.URL;
 
 @Data
-public class BarberCreateProduct {
+public class BarberEditProduct {
 
     @NotBlank
     @Size(min = 3, message = "Name must be at least 3 symbols")
@@ -17,15 +17,9 @@ public class BarberCreateProduct {
     @NotBlank
     @Size(min = 3, message = "Description must be at least 6 symbols")
     private String description;
-
-    @URL
-    private String imageUrl;
-
+    
     @NotNull
     private double price;
-
-    @NotNull
-    private ProductCategory category;
 
 
 }

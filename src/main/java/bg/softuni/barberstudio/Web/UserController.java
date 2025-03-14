@@ -4,16 +4,15 @@ import bg.softuni.barberstudio.Appointment.Model.Appointment;
 import bg.softuni.barberstudio.Appointment.Service.AppointmentService;
 import bg.softuni.barberstudio.Comment.Model.Comment;
 import bg.softuni.barberstudio.Comment.Service.CommentService;
+import bg.softuni.barberstudio.Product.Model.Product;
+import bg.softuni.barberstudio.Product.Service.ProductService;
 import bg.softuni.barberstudio.Security.AuthenticationDetails;
 import bg.softuni.barberstudio.Service.Model.BarberService;
 import bg.softuni.barberstudio.Service.Service.BarberServiceService;
 import bg.softuni.barberstudio.User.Model.User;
 import bg.softuni.barberstudio.User.Model.UserRole;
 import bg.softuni.barberstudio.User.Service.UserService;
-import bg.softuni.barberstudio.Web.Dto.BarberCreateProduct;
-import bg.softuni.barberstudio.Web.Dto.BarberServiceCreate;
-import bg.softuni.barberstudio.Web.Dto.CommentCreateRequest;
-import bg.softuni.barberstudio.Web.Dto.UserEditRequest;
+import bg.softuni.barberstudio.Web.Dto.*;
 import bg.softuni.barberstudio.untility.DtoMapper;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +33,15 @@ public class UserController {
     private final AppointmentService appointmentService;
     private final BarberServiceService barberServiceService;
     private final CommentService commentService;
+    private final ProductService productService;
 
     @Autowired
-    public UserController(UserService userService, AppointmentService appointmentService, BarberServiceService barberServiceService, CommentService commentService) {
+    public UserController(UserService userService, AppointmentService appointmentService, BarberServiceService barberServiceService, CommentService commentService, ProductService productService) {
         this.userService = userService;
         this.appointmentService = appointmentService;
         this.barberServiceService = barberServiceService;
         this.commentService = commentService;
+        this.productService = productService;
     }
 
     @GetMapping("/profile")
@@ -83,11 +84,18 @@ public class UserController {
 
         User user  = userService.getById(authenticationDetails.getId());
 
+        List<BarberService> services = barberServiceService.getAllServicesByAddedByBarber(user);
+        List<Product> products = productService.getAllProductsByAddedByBarber(user);
+
 
         ModelAndView modelAndView = new ModelAndView("barber-panel");
         modelAndView.addObject("user",user);
         modelAndView.addObject("barberServiceCreate", new BarberServiceCreate());
         modelAndView.addObject("barberCreateProduct", new BarberCreateProduct());
+        modelAndView.addObject("barberServiceEdit", new BarberServiceEdit());
+        modelAndView.addObject("barberEditProduct", new BarberEditProduct());
+        modelAndView.addObject("services",services);
+        modelAndView.addObject("products",products);
 
 
 
@@ -99,15 +107,19 @@ public class UserController {
 
         User user = userService.getById(authenticationDetails.getId());
         User barber = userService.getById(id);
+
         List<BarberService> services = barberServiceService.getAllServices(id);
         List<Comment> comments = commentService.getAllComments();
+        List<Product> products = productService.getAllProducts(barber);
 
         ModelAndView modelAndView = new ModelAndView("barber");
+        modelAndView.addObject("user",user);
         modelAndView.addObject("barber", barber);
         modelAndView.addObject("services", services);
         modelAndView.addObject("commentCreateRequest", new CommentCreateRequest());
         modelAndView.addObject("comments", comments);
-        modelAndView.addObject("user",user);
+        modelAndView.addObject("products", products);
+
 
         return modelAndView;
     }

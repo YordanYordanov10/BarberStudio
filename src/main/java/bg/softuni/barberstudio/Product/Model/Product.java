@@ -27,6 +27,9 @@ public class Product {
     private String description;
 
     @Column(nullable = false)
+    private String imageUrl;
+
+    @Column(nullable = false)
     private double price;
 
     @Enumerated(EnumType.STRING)
