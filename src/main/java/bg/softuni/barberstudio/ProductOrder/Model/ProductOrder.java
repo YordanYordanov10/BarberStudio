@@ -31,6 +31,8 @@ public class ProductOrder {
     @Column(nullable = false)
     private int quantity;
 
+    private double totalPrice;
+
     @Column(nullable = false)
     private LocalDateTime orderDate;
 }

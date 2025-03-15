@@ -7,6 +7,7 @@ import bg.softuni.barberstudio.User.Service.UserService;
 import bg.softuni.barberstudio.Web.Dto.BarberCreateProduct;
 import bg.softuni.barberstudio.Web.Dto.BarberEditProduct;
 import bg.softuni.barberstudio.Web.Dto.BarberServiceEdit;
+import bg.softuni.barberstudio.Web.Dto.ProductOrderRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.UUID;
 
@@ -75,5 +77,7 @@ public class ProductController {
 
         return "redirect:/barber-panel";
     }
+
+
 }
 

@@ -3,13 +3,17 @@ package bg.softuni.barberstudio.Product.Service;
 import bg.softuni.barberstudio.Exception.DomainException;
 import bg.softuni.barberstudio.Product.Model.Product;
 import bg.softuni.barberstudio.Product.Repository.ProductRepository;
+import bg.softuni.barberstudio.ProductOrder.Model.ProductOrder;
+import bg.softuni.barberstudio.ProductOrder.Repository.ProductOrderRepository;
 import bg.softuni.barberstudio.User.Model.User;
 import bg.softuni.barberstudio.Web.Dto.BarberCreateProduct;
 import bg.softuni.barberstudio.Web.Dto.BarberEditProduct;
+import bg.softuni.barberstudio.Web.Dto.ProductOrderRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,10 +21,12 @@ import java.util.UUID;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductOrderRepository productOrderRepository;
 
     @Autowired
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, ProductOrderRepository productOrderRepository) {
         this.productRepository = productRepository;
+        this.productOrderRepository = productOrderRepository;
     }
 
     public void createNewProduct(BarberCreateProduct barberCreateProduct, User barber) {
@@ -66,4 +72,12 @@ public class ProductService {
 
         productRepository.save(product);
     }
+
+
+    public Product getById(UUID productId) {
+
+        return productRepository.findById(productId).orElseThrow(() -> new DomainException("Product not found"));
+    }
+
+
 }

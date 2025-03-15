@@ -6,6 +6,8 @@ import bg.softuni.barberstudio.Comment.Model.Comment;
 import bg.softuni.barberstudio.Comment.Service.CommentService;
 import bg.softuni.barberstudio.Product.Model.Product;
 import bg.softuni.barberstudio.Product.Service.ProductService;
+import bg.softuni.barberstudio.ProductOrder.Model.ProductOrder;
+import bg.softuni.barberstudio.ProductOrder.Service.ProductOrderService;
 import bg.softuni.barberstudio.Security.AuthenticationDetails;
 import bg.softuni.barberstudio.Service.Model.BarberService;
 import bg.softuni.barberstudio.Service.Service.BarberServiceService;
@@ -34,14 +36,16 @@ public class UserController {
     private final BarberServiceService barberServiceService;
     private final CommentService commentService;
     private final ProductService productService;
+    private final ProductOrderService productOrderService;
 
     @Autowired
-    public UserController(UserService userService, AppointmentService appointmentService, BarberServiceService barberServiceService, CommentService commentService, ProductService productService) {
+    public UserController(UserService userService, AppointmentService appointmentService, BarberServiceService barberServiceService, CommentService commentService, ProductService productService, ProductOrderService productOrderService) {
         this.userService = userService;
         this.appointmentService = appointmentService;
         this.barberServiceService = barberServiceService;
         this.commentService = commentService;
         this.productService = productService;
+        this.productOrderService = productOrderService;
     }
 
     @GetMapping("/profile")
@@ -50,11 +54,13 @@ public class UserController {
         User user = userService.getById(authenticationDetails.getId());
 
         List<Appointment> appointments = appointmentService.getAppointmentsByUser(authenticationDetails.getId());
+        List<ProductOrder> orders = productOrderService.getProductOrderByUserId(user);
 
         ModelAndView modelAndView = new ModelAndView("profile");
         modelAndView.addObject("user", user);
         modelAndView.addObject("userEditRequest", DtoMapper.mapUserToUserEditRequest(user));
         modelAndView.addObject("appointments", appointments);
+        modelAndView.addObject("orders", orders);
 
 
         return modelAndView;
@@ -63,8 +69,10 @@ public class UserController {
     @PutMapping("/profile")
     public ModelAndView editProfile(@AuthenticationPrincipal AuthenticationDetails authenticationDetails, @Valid UserEditRequest userEditRequest, BindingResult bindingResult){
 
+        User user = userService.getById(authenticationDetails.getId());
+
+
         if(bindingResult.hasErrors()) {
-            User user = userService.getById(authenticationDetails.getId());
             ModelAndView modelAndView = new ModelAndView("profile");
             modelAndView.addObject("user", user);
             modelAndView.addObject("userEditRequest", userEditRequest);
@@ -118,7 +126,9 @@ public class UserController {
         modelAndView.addObject("services", services);
         modelAndView.addObject("commentCreateRequest", new CommentCreateRequest());
         modelAndView.addObject("comments", comments);
+        modelAndView.addObject("productOrderRequest", new ProductOrderRequest());
         modelAndView.addObject("products", products);
+
 
 
         return modelAndView;

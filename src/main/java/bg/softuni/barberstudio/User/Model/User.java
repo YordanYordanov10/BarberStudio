@@ -61,4 +61,5 @@ public class User {
 
     @OneToMany(mappedBy = "buyer", fetch = FetchType.EAGER)
     private List<ProductOrder> purchasedProducts;
+
 }
