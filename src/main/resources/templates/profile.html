@@ -67,65 +67,131 @@
             </form>
         </div>
 
-        <!-- Right Section - Appointments Table -->
+        <!-- Right Section - Appointments and Product Orders -->
         <div class="col-md-6">
-            <h3 class="text-center">My Appointments</h3>
-            <table class="table table-striped">
-                <thead class="table-dark">
-                <tr>
-                    <th>Barber</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="appointment : ${appointments}">
-                    <td th:text="${appointment.barber.getUsername()}"></td>
-                    <td th:text="${appointment.appointmentDate}"></td>
-                    <td th:text="${appointment.timeSlot}"></td>
-                    <td>
-                        <form th:action="@{/booking/cancel/{id}(id=${appointment.id})}" th:method="DELETE">
-                            <input type="hidden" name="appointmentId" th:value="${appointment.id}">
-                            <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
-                        </form>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <!-- Appointments Table (for Regular Users) -->
+            <div th:if="${user.role == T(bg.softuni.barberstudio.User.Model.UserRole).USER}">
+                <h3 class="text-center">My Appointments</h3>
+                <table class="table table-striped">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>Barber</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="appointment : ${appointments}">
+                        <td th:text="${appointment.barber.username}"></td>
+                        <td th:text="${appointment.appointmentDate}"></td>
+                        <td th:text="${appointment.timeSlot}"></td>
+                        <td>
+                            <form th:action="@{/booking/cancel/{id}(id=${appointment.id})}" th:method="DELETE">
+                                <input type="hidden" name="appointmentId" th:value="${appointment.id}">
+                                <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
 
-            <!-- Product Orders Table -->
-            <h3 class="text-center mt-5">My Product Orders</h3>
-            <table class="table table-striped">
-                <thead class="table-dark">
-                <tr>
-                    <th>Product Image</th>
-                    <th>Product Name</th>
-                    <th>Quantity</th>
-                    <th>Total Price</th>
-                    <th>Ordered Date</th>
-                    <th>Barber</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="order : ${orders}">
-                    <td>
-                        <img th:src="${order.product.imageUrl}" alt="Product Image" class="img-fluid" style="width: 50px; height: 50px; border-radius: 10px;">
-                    </td>
-                    <td th:text="${order.product.name}"></td>
-                    <td th:text="${order.quantity}"></td>
-                    <td th:text="${#numbers.formatDecimal(order.totalPrice, 1, 2)} + ' BGN'"></td>
-                    <td th:text="${#temporals.format(order.orderDate, 'dd-MM-yyyy')}"></td>
-                    <td th:text="${order.product.addedByBarber.username}"></td>
-                    <td>
-                        <form th:action="@{/profile/cancel-order/{id}(id=${order.id})}" th:method="DELETE">
-                            <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
-                        </form>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <!-- Product Orders Table (for Regular Users) -->
+            <div th:if="${user.role == T(bg.softuni.barberstudio.User.Model.UserRole).USER}">
+                <h3 class="text-center mt-5">My Product Orders</h3>
+                <table class="table table-striped">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>Product Image</th>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Total Price</th>
+                        <th>Ordered Date</th>
+                        <th>Barber</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="order : ${orders}">
+                        <td>
+                            <img th:src="${order.product.imageUrl}" alt="Product Image" class="img-fluid" style="width: 50px; height: 50px; border-radius: 10px;">
+                        </td>
+                        <td th:text="${order.product.name}"></td>
+                        <td th:text="${order.quantity}"></td>
+                        <td th:text="${#numbers.formatDecimal(order.totalPrice, 1, 2)} + ' BGN'"></td>
+                        <td th:text="${#temporals.format(order.orderDate, 'dd-MM-yyyy')}"></td>
+                        <td th:text="${order.product.addedByBarber.username}"></td>
+                        <td>
+                            <form th:action="@{/profile/cancel-order/{id}(id=${order.id})}" th:method="DELETE">
+                                <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Barber-Specific Tables (for Barbers) -->
+            <div th:if="${user.role == T(bg.softuni.barberstudio.User.Model.UserRole).BARBER}">
+                <!-- Barber's Appointments -->
+                <h3 class="text-center">My Scheduled Appointments</h3>
+                <table class="table table-striped">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>Client</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="appointment : ${barberAppointments}">
+                        <td th:text="${appointment.customerName}"></td>
+                        <td th:text="${appointment.appointmentDate}"></td>
+                        <td th:text="${appointment.timeSlot}"></td>
+                        <td>
+                            <form th:action="@{/barber/cancel-appointment/{id}(id=${appointment.id})}" th:method="DELETE">
+                                <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <!-- Barber's Product Orders -->
+                <h3 class="text-center mt-5">My Product Orders</h3>
+                <table class="table table-striped">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>Product Image</th>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Total Price</th>
+                        <th>Ordered Date</th>
+                        <th>Client</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="order : ${barberOrders}">
+                        <td>
+                            <img th:src="${order.product.imageUrl}" alt="Product Image" class="img-fluid" style="width: 50px; height: 50px; border-radius: 10px;">
+                        </td>
+                        <td th:text="${order.product.name}"></td>
+                        <td th:text="${order.quantity}"></td>
+                        <td th:text="${#numbers.formatDecimal(order.totalPrice, 1, 2)} + ' BGN'"></td>
+                        <td th:text="${#temporals.format(order.orderDate, 'dd-MM-yyyy')}"></td>
+                        <td th:text="${order.buyer.username}"></td>
+                        <td>
+                            <form th:action="@{/barber/cancel-order/{id}(id=${order.id})}" th:method="DELETE">
+                                <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

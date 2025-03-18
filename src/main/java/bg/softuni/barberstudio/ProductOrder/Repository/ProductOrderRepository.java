@@ -11,4 +11,6 @@ import java.util.UUID;
 @Repository
 public interface ProductOrderRepository extends JpaRepository<ProductOrder, UUID> {
     List<ProductOrder> getProductOrdersByBuyer(User buyer);
+
+    List<ProductOrder> getProductOrdersByProductAddedByBarber(User barber);
 }

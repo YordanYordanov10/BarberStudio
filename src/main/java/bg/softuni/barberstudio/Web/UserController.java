@@ -52,15 +52,22 @@ public class UserController {
     public ModelAndView getProfile(@AuthenticationPrincipal AuthenticationDetails authenticationDetails){
 
         User user = userService.getById(authenticationDetails.getId());
+        User barber = userService.getById(authenticationDetails.getId());
+
 
         List<Appointment> appointments = appointmentService.getAppointmentsByUser(authenticationDetails.getId());
         List<ProductOrder> orders = productOrderService.getProductOrderByUserId(user);
+
+        List<Appointment> barberAppointments = appointmentService.getAppointmentsByBarber(barber.getId());
+        List<ProductOrder> barberOrders = productOrderService.getProductOrderByBarber(barber);
 
         ModelAndView modelAndView = new ModelAndView("profile");
         modelAndView.addObject("user", user);
         modelAndView.addObject("userEditRequest", DtoMapper.mapUserToUserEditRequest(user));
         modelAndView.addObject("appointments", appointments);
         modelAndView.addObject("orders", orders);
+        modelAndView.addObject("barberAppointments", barberAppointments);
+        modelAndView.addObject("barberOrders", barberOrders);
 
 
         return modelAndView;

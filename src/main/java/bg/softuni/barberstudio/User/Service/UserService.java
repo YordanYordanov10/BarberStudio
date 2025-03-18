@@ -5,10 +5,8 @@ import bg.softuni.barberstudio.Security.AuthenticationDetails;
 import bg.softuni.barberstudio.User.Model.User;
 import bg.softuni.barberstudio.User.Model.UserRole;
 import bg.softuni.barberstudio.User.Repository.UserRepository;
-import bg.softuni.barberstudio.Web.Dto.LoginRequest;
 import bg.softuni.barberstudio.Web.Dto.RegisterRequest;
 import bg.softuni.barberstudio.Web.Dto.UserEditRequest;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -110,7 +108,13 @@ public class UserService implements UserDetailsService {
     }
 
 
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
 
+    public void save(User user) {
+        userRepository.save(user);
+    }
 }
 
 

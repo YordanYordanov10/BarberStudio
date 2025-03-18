@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -48,5 +49,14 @@ public class ProductOrderController {
         redirectAttributes.addFlashAttribute("message", "Product purchased successfully!");
 
         return "redirect:/barber/" + barberId;
+    }
+
+    @DeleteMapping("/profile/cancel-order/{productOrderId}")
+    public String cancelOrder(@PathVariable("productOrderId") UUID productOrderId, @AuthenticationPrincipal AuthenticationDetails authenticationDetails) {
+
+
+        productOrderService.cancelProductOrder(productOrderId);
+
+        return "redirect:/profile";
     }
 }

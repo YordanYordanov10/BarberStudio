@@ -1,5 +1,6 @@
 package bg.softuni.barberstudio.ProductOrder.Service;
 
+import bg.softuni.barberstudio.Exception.DomainException;
 import bg.softuni.barberstudio.Product.Model.Product;
 import bg.softuni.barberstudio.ProductOrder.Model.ProductOrder;
 import bg.softuni.barberstudio.ProductOrder.Repository.ProductOrderRepository;
@@ -37,5 +38,17 @@ public class ProductOrderService {
     public List<ProductOrder> getProductOrderByUserId(User buyer) {
 
          return productOrderRepository.getProductOrdersByBuyer(buyer);
+    }
+
+    public void cancelProductOrder(UUID productOrderId) {
+
+        ProductOrder productOrder = productOrderRepository.findById(productOrderId).orElseThrow(() -> new DomainException("ProductOrder not found"));
+
+        productOrderRepository.delete(productOrder);
+    }
+
+    public List<ProductOrder> getProductOrderByBarber(User barber) {
+
+        return productOrderRepository.getProductOrdersByProductAddedByBarber(barber);
     }
 }
