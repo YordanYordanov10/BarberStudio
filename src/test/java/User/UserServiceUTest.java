@@ -1,15 +1,21 @@
 package User;
 
 import bg.softuni.barberstudio.Exception.DomainException;
+import bg.softuni.barberstudio.Security.AuthenticationDetails;
 import bg.softuni.barberstudio.User.Model.User;
+import bg.softuni.barberstudio.User.Model.UserRole;
 import bg.softuni.barberstudio.User.Repository.UserRepository;
 import bg.softuni.barberstudio.User.Service.UserService;
 import bg.softuni.barberstudio.Web.Dto.RegisterRequest;
+import bg.softuni.barberstudio.Web.Dto.UserEditRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
@@ -81,4 +87,89 @@ public class UserServiceUTest {
         verify(userRepository, times(1)).findByUsernameOrEmail(registerRequest.getUsername(), registerRequest.getEmail());
         verify(userRepository, times(1)).save(any(User.class));
     }
+
+    @Test
+    void givenMissingUserFromDatabase_whenLoadUserByUsername(){
+
+        String username = "daka123";
+
+        when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
+
+        assertThrows(DomainException.class, () -> userService.loadUserByUsername(username));
+    }
+
+    @Test
+    void givenExistUser_whenLoadUserByUsername(){
+
+        //Given
+        String username = "daka123";
+        User user = User.builder()
+                .id(UUID.randomUUID())
+                .username(username)
+                .password("hashed_password")
+                .isActive(true)
+                .role(UserRole.USER)
+                .build();
+
+        when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
+
+        //When
+        UserDetails actualUserDetails = userService.loadUserByUsername(username);
+
+        assertInstanceOf(AuthenticationDetails.class, actualUserDetails);
+        AuthenticationDetails result = (AuthenticationDetails) actualUserDetails;
+        assertNotNull(actualUserDetails);
+        assertEquals(username, result.getUsername());
+        assertEquals(user.getPassword(), result.getPassword());
+        assertEquals(user.isActive,result.isActive());
+        assertEquals(user.getRole(),result.getRole());
+    }
+
+    @Test
+    void givenUserById_whenGetById_ThrowException(){
+
+        UUID id = UUID.randomUUID();
+        when(userRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(DomainException.class, () -> userService.getById(id));
+    }
+
+    @Test
+    void givenUserById_whenGetById(){
+
+        UUID id = UUID.randomUUID();
+        User user = User.builder()
+                .id(id)
+                .build();
+        when(userRepository.findById(id)).thenReturn(Optional.of(user));
+
+        assertNotNull(userService.getById(id));
+        assertEquals(id, userService.getById(id).getId());
+    }
+
+    @Test
+    void givenUserDetailEdit_whenUserEditDetails(){
+
+        UUID id = UUID.randomUUID();
+        User user = User.builder()
+                .id(id)
+                .build();
+
+        UserEditRequest userEditRequest = UserEditRequest.builder()
+                .firstName("Daka")
+                .lastName("dakov")
+                .profilePictureUrl("www.daka.com")
+                .build();
+
+        when(userRepository.findById(id)).thenReturn(Optional.of(user));
+
+       userService.editUserDetails(id, userEditRequest);
+
+       assertEquals("Daka", user.getFirstName());
+       assertEquals("dakov", user.getLastName());
+       assertEquals("www.daka.com", user.getProfilePicture());
+       verify(userRepository, times(1)).save(user);
+
+    }
+
 }
