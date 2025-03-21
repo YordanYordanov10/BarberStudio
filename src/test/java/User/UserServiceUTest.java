@@ -17,7 +17,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import static org.assertj.core.api.Assertions.assertThat;
 
+
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -169,7 +172,40 @@ public class UserServiceUTest {
        assertEquals("dakov", user.getLastName());
        assertEquals("www.daka.com", user.getProfilePicture());
        verify(userRepository, times(1)).save(user);
+    }
+
+    @Test
+    void givenListOfUsers_whenGetAllUsers(){
+
+        //Given
+        List<User> userList = List.of(new User(),new User(),new User());
+
+        //When
+        when(userRepository.findAll()).thenReturn(userList);
+
+        List<User> users = userService.getAllUsers();
+
+        assertThat(users).hasSize(3);
+    }
+
+    @Test
+    void givenUserRoleUpdate_whenUpdateUserRole(){
+        //Given
+        UUID id = UUID.randomUUID();
+        User user = User.builder()
+                .id(id)
+                .build();
+
 
     }
+
+//    @CacheEvict(value = "users", allEntries = true)
+//    public void updateUserRole(UUID userId, String role) {
+//
+//       User user = getById(userId);
+//       user.setRole(UserRole.valueOf(role));
+//       userRepository.save(user);
+//
+//    }
 
 }
