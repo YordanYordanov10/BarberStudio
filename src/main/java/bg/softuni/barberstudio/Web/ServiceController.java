@@ -1,6 +1,7 @@
 package bg.softuni.barberstudio.Web;
 
 import bg.softuni.barberstudio.Security.AuthenticationDetails;
+import bg.softuni.barberstudio.Service.Model.BarberService;
 import bg.softuni.barberstudio.Service.Service.BarberServiceService;
 import bg.softuni.barberstudio.User.Model.User;
 import bg.softuni.barberstudio.User.Service.UserService;
@@ -29,13 +30,19 @@ public class ServiceController {
     }
 
     @GetMapping("/services")
-    public ModelAndView getServices(@AuthenticationPrincipal AuthenticationDetails authenticationDetails){
+    public ModelAndView getServices(@AuthenticationPrincipal AuthenticationDetails authenticationDetails,
+                                    @RequestParam(value = "barberId", required = false) UUID barberId){
+
+        User user = userService.getById(authenticationDetails.getId());
 
         List<User> barbers = userService.findByUserRole();
+        List<BarberService> services = barberServiceService.getServicesByBarberId(barberId);
 
         ModelAndView modelAndView = new ModelAndView("services");
-        modelAndView.addObject("barbers",barbers);
-
+        modelAndView.addObject("barbers", barbers);
+        modelAndView.addObject("services", services);
+        modelAndView.addObject("selectedBarberId", barberId);
+        modelAndView.addObject("user", user);
 
         return modelAndView;
     }

@@ -1,117 +1,258 @@
 <!DOCTYPE html>
-<html data-bs-theme="light" lang="bg">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Studio Professionals</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Akaya+Kanadaka&amp;display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alegreya+SC&amp;display=swap">
-    <link rel="stylesheet" href="assets/css/Font%20Awesome%205%20Brands.css">
-    <link rel="stylesheet" href="assets/css/Font%20Awesome%205%20Free.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans&amp;display=swap">
-    <link rel="stylesheet" href="assets/css/animate.min.css">
-    <link rel="stylesheet" href="assets/css/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/fonts/fontawesome-all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barber Studio</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/Testimonials-Centered-images.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Akaya+Kanadaka&amp;display=swap">
+    <style>
+        body {
+            font-family: 'Akaya Kanadaka', serif;
+        }
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.95) !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .navbar-brand {
+            color: #1ddec1 !important;
+            font-weight: bold;
+        }
+        .nav-link {
+            color: #333 !important;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #1ddec1 !important;
+        }
+        .price {
+            color: #1ddec1;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .hero-section {
+            margin-top: 76px; /* Добавяме отстъп за фиксирания нав бар */
+            position: relative;
+            height: 600px;
+            overflow: hidden;
+            margin-bottom: 4rem;
+        }
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.7);
+        }
+        .hero-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            z-index: 1;
+        }
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .hero-content p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        .cta-button {
+            background: #1ddec1;
+            border: none;
+            padding: 1rem 2.5rem;
+            font-size: 1.2rem;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .cta-button:hover {
+            background: #19c5ab;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            color: white;
+        }
+        .section-title {
+            color: #1ddec1;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .barber-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            margin-bottom: 2rem;
+        }
+        .barber-card:hover {
+            transform: translateY(-5px);
+        }
+        .barber-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+        .barber-info {
+            padding: 1.5rem;
+        }
+        .barber-name {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        .testimonial-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            height: 100%;
+        }
+        .carousel-control-prev,
+        .carousel-control-next {
+            width: 5%;
+            background-color: rgba(29, 222, 193, 0.2);
+            border-radius: 50%;
+            height: 50px;
+            width: 50px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.8;
+        }
+        .carousel-control-prev:hover,
+        .carousel-control-next:hover {
+            opacity: 1;
+        }
+        .carousel-indicators {
+            bottom: -40px;
+        }
+        .carousel-indicators button {
+            background-color: #1ddec1;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .testimonial-barber {
+            color: #333;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #1ddec1;
+        }
+        .testimonial-text {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            font-style: italic;
+        }
+        .testimonial-author {
+            color: #1ddec1;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+        .testimonial-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .section-padding {
+            padding: 4rem 0;
+        }
+        .bg-light {
+            background-color: #f8f9fa;
+        }
+        .btn-outline-light {
+            color: #1ddec1 !important;
+            border-color: #1ddec1 !important;
+        }
+        .btn-outline-light:hover {
+            background-color: #1ddec1 !important;
+            color: white !important;
+        }
+    </style>
 </head>
 
-<body style="font-family: 'Akaya Kanadaka', serif;">
+<body>
 <nav th:replace="~{fragments/commons::nav}"></nav>
 
-<header class="text-center text-white bg-dark py-5 pt- mt-" style="background: radial-gradient(#1ddec1 11%, white), #1ddec1;">
-    <div class="container-fluid pb- mb- mt- pt-" style="background: url(/css/img/pexels-nickoloui-1319459.jpg) top / cover no-repeat;font-size: 16px;height: 550.2px;margin: 5px;padding: 140px;">
-        <h1 class="display-4" style="font-size: 85px;">Welcome to Barber Studio&nbsp;</h1>
-        <h2 th:if="${isLoggedIn}" th:text="|Hello, ${user.username}!|" class="mt-3"></h2>
-        <p class="lead">Открийте най-добрите фризьори, барбъри и маникюристи на едно място.</p><a class="btn btn-primary btn-lg mt-3" role="button" th:href="@{/booking}" style="background: #1ddec1;">Booking</a>
+<!-- Hero Section -->
+<div class="hero-section">
+    <img src="/css/img/pexels-nickoloui-1319459.jpg" alt="Barber Shop" class="hero-image">
+    <div class="hero-content">
+        <h1>Welcome to Barber Studio</h1>
+        <p>Experience the art of grooming</p>
+        <a th:href="@{/services}" class="cta-button">Book Appointment</a>
     </div>
+        </div>
 
-</header>
-<div class="container py-4 py-xl-5">
-    <div class="row mb-5" style="background: linear-gradient(360deg, #1ddec1 62%, white), #1ddec1;">
-        <div class="col-md-8 col-xl-6 text-center mx-auto">
-            <h2 class="fs-1">Our Services</h2>
+<!-- Our Barbers Section -->
+<div class="container section-padding">
+    <h2 class="section-title">Our Professional Barbers</h2>
+    <div class="row">
+        <div class="col-md-4" th:each="barber : ${barbers}">
+            <div class="barber-card">
+                <img th:src="${barber.getProfilePicture()}" alt="Barber" class="barber-image">
+                <div class="barber-info">
+                    <h3 class="barber-name" th:text="${barber.firstName + ' ' + barber.lastName}">Barber Name</h3>
+                    <p class="text-muted" th:text="${barber.username}">Barber username</p>
+                    <a th:href="@{/barber/{id}(id=${barber.id})}" class="cta-button">View Profile</a>
         </div>
-    </div>
-    <div class="row g-0 row-cols-1 row-cols-sm-2 row-cols-lg-3 d-flex flex-row justify-content-xxl-center align-items-xxl-center" style="margin: 0;margin-top: 0;padding: 0px;width: 1296px;">
-        <div class="col" style="background: rgba(29,222,193,0.17);border-radius: 25px;">
-            <div class="d-flex flex-column justify-content-center align-items-center" style="padding: 40px;margin: 0px;">
-                <p class="fs-1 fw-bold text-center" style="font-size: 16px;"><br>Men's Haircut and Beard<br><br></p>
-                <p class="fs-3 justify-content-xxl-start align-items-xxl-start" style="text-align: center;backdrop-filter: opacity(0.70);-webkit-backdrop-filter: opacity(0.70);background: #ffffff;border-radius: 25px;box-shadow: 5px 5px 20px 9px rgb(33, 37, 41);font-family: 'Open Sans', sans-serif;"><br>Individual and customer-oriented hair and beard trimming<br><br></p>
-            </div>
-        </div>
-        <div class="col" style="background: rgba(29,222,193,0.17);border-radius: 25px;">
-            <div class="d-flex flex-column justify-content-center align-items-center" style="padding: 40px;margin: 0px;">
-                <p class="fs-1 fw-bold text-center" style="font-size: 16px;"><br>Men's Haircut and Beard<br><br></p>
-                <p class="fs-3 justify-content-xxl-start align-items-xxl-start" style="text-align: center;backdrop-filter: opacity(0.70);-webkit-backdrop-filter: opacity(0.70);background: #ffffff;border-radius: 25px;box-shadow: 5px 5px 20px 9px rgb(33, 37, 41);font-family: 'Open Sans', sans-serif;"><br>Individual and customer-oriented hair and beard trimming<br><br></p>
-            </div>
-        </div>
-        <div class="col ps- pe- me- pt- mt-" style="background: rgba(29,222,193,0.17);border-radius: 25px;">
-            <div class="d-flex flex-column justify-content-center align-items-center" style="padding: 40px;margin: 0px;">
-                <p class="fs-1 fw-bold text-center" style="font-size: 16px;"><br>Men's Haircut and Beard<br><br></p>
-                <p class="fs-3 justify-content-xxl-start align-items-xxl-start" style="text-align: center;backdrop-filter: opacity(0.70);-webkit-backdrop-filter: opacity(0.70);background: #ffffff;border-radius: 25px;box-shadow: 5px 5px 20px 9px rgb(33, 37, 41);font-family: 'Open Sans', sans-serif;"><br>Individual and customer-oriented hair and beard trimming<br><br></p>
             </div>
         </div>
     </div>
 </div>
 
-<section class="bg-light py-5" id="professionals">
-    <div class="container" style="background: rgba(29,222,193,0.14);border-radius: 20px;">
-        <h2 class="text-center mb-5">Our Barbers&nbsp;<br><br></h2>
-        <div class="row">
-            <div class="col-md-4 text-center" th:each="barber : ${barbers}">
-                <img th:src="${barber.getProfilePicture()}" class="rounded-circle mb-3"
-                     src="https://randomuser.me/api/portraits/men/9.jpg" alt="Професионалист 1" style="width:150px;">
-                <h5 th:text="${barber.firstName}">Ivan Ivanov</h5>
-                <p th:text="${barber.username}">Barber&nbsp;</p>
-                <div class="d-flex flex-column align-items-xxl-center" style="padding: 15px;">
-                    <p style="margin-top: 40px;font-size: 35px;">Take your adventure</p>
-                    <a class="btn btn-primary btn-lg fs-3" data-bss-hover-animate="tada"
-                       th:href="@{/barber/{id}(id=${barber.id})}"
-                       style="background: #1ddec1; border-color: #1ddec1; border-radius: 25px; margin: 0px;">
-                        View Profile
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-    <!-- Testimonials Section -->
-    <div class="container py-4 py-xl-5" style="background: rgba(29,222,193,0.14); margin-bottom: 56px;">
-        <div class="row mb-5">
-            <div class="col-md-8 col-xl-6 text-center mx-auto">
-                <h2>Testimonials</h2>
-            </div>
-        </div>
+<!-- Testimonials Section -->
+<div class="bg-light section-padding">
+    <div class="container">
+        <h2 class="section-title">What Our Clients Say</h2>
         <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
             <!-- Carousel Indicators -->
             <div class="carousel-indicators">
                 <button th:each="testimonial, iterStat : ${testimonials}"
                         data-bs-target="#testimonialCarousel"
                         th:data-bs-slide-to="${iterStat.index}"
-                        th:class="${iterStat.first} ? 'active' : ''"></button>
+                        th:class="${iterStat.first} ? 'active' : ''"
+                        th:aria-label="'Go to slide ' + ${iterStat.index + 1}"></button>
             </div>
 
             <!-- Carousel Items -->
             <div class="carousel-inner">
                 <div th:each="testimonial, iterStat : ${testimonials}"
                      th:class="${iterStat.first} ? 'carousel-item active' : 'carousel-item'">
-                    <div class="card p-4 text-center shadow-sm" style="border-radius: 20px; background: rgba(255, 255, 255, 0.9);">
-                        <!-- User Profile Picture -->
-                        <img th:src="${testimonial.imageUrl}"
-                             class="rounded-circle mb-3"
-                             style="width: 80px; height: 80px;"
-                             alt="User Profile Picture">
-
-                        <!-- Testimonial Text -->
-                        <p class="fs-5" th:text="${testimonial.comment}"></p>
-
-                        <!-- User Name -->
-                        <p class="fw-bold mb-1" th:text="'— ' + ${testimonial.author.username}"></p>
-
-
+                    <div class="row justify-content-center">
+                        <div class="col-md-4">
+                            <div class="testimonial-card">
+                                <p class="testimonial-barber" th:text="'Barber: ' + ${testimonial.barber.username}">Barber Name</p>
+                                <p class="testimonial-text" th:text="${testimonial.comment}">Testimonial text</p>
+                                <div class="testimonial-author">
+                                    <img th:src="${testimonial.author.profilePicture != null ? testimonial.author.profilePicture : '/css/img/default-avatar.png'}"
+                                         alt="User profile"
+                                         class="testimonial-image">
+                                    <span th:text="${testimonial.author.username}">Author name</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -119,22 +260,32 @@
             <!-- Carousel Controls -->
             <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
+                <span class="visually-hidden">Previous testimonial</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
+                <span class="visually-hidden">Next testimonial</span>
             </button>
         </div>
     </div>
+</div>
 
 <footer class="text-center text-white bg-dark py-3">
     <p>© 2025 Studio Professionals. All rights reserved.</p>
 </footer>
-<script src="assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="assets/js/bs-init.js"></script>
-<script src="assets/js/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var testimonialCarousel = new bootstrap.Carousel(document.getElementById('testimonialCarousel'), {
+            interval: 5000, // Превключва на всеки 5 секунди
+            wrap: true,     // Зацикляне на карусела
+            pause: 'hover'  // Спира при hover
+        });
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"></script>
+
 </body>
 
 </html>

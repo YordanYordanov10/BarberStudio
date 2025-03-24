@@ -9,6 +9,7 @@ import bg.softuni.barberstudio.Web.Dto.BarberServiceEdit;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,17 +29,18 @@ public class BarberServiceService {
         barberService.setName(barberServiceCreate.getName());
         barberService.setDescription(barberServiceCreate.getDescription());
         barberService.setPrice(barberServiceCreate.getPrice());
-        barberService.setBarberId(barber);
+        barberService.setBarber(barber);
 
         barberServiceRepository.save(barberService);
     }
 
-    public List<BarberService> getAllServices(UUID id) {
-        return barberServiceRepository.findAll();
+    public List<BarberService> getAllServices(User barber) {
+        return barberServiceRepository.findAllByBarber(barber);
     }
 
     public List<BarberService> getAllServicesByAddedByBarber(User barber) {
-        return barberServiceRepository.findAllByBarberId(barber);
+        List<BarberService> services = barberServiceRepository.findAllByBarber(barber);
+        return services != null ? services : new ArrayList<>();
     }
 
     public void deleteBarberServiceById(UUID serviceId) {
@@ -58,4 +60,12 @@ public class BarberServiceService {
         barberServiceRepository.save(service);
     }
 
+    public BarberService getBarberServiceById(UUID barberId) {
+        return barberServiceRepository.findById(barberId).orElseThrow(()-> new DomainException("No such BarberService"));
+    }
+
+    public List<BarberService> getServicesByBarberId(UUID barberId) {
+        List<BarberService> allByBarberId = barberServiceRepository.findAllByBarberId(barberId);
+        return allByBarberId != null ? allByBarberId : new ArrayList<>();
+    }
 }

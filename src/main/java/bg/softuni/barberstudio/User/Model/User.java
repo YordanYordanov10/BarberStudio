@@ -47,14 +47,17 @@ public class User {
     @Column(nullable = false)
     private UserRole role;
 
-    @OneToMany(mappedBy = "barberId", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "barber", fetch = FetchType.EAGER)
     private List<BarberService> barberServices;
 
     @OneToMany(mappedBy = "barber", fetch = FetchType.EAGER)
     private List<Appointment> appointments;
 
     @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
-    private List<Comment> comments;
+    private List<Comment> commentsAuthored;
+
+    @OneToMany(mappedBy = "barber", fetch = FetchType.EAGER)
+    private List<Comment> commentsAboutBarber;
 
     @OneToMany(mappedBy = "addedByBarber", fetch = FetchType.EAGER)
     private List<Product> products;

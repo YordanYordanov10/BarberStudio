@@ -2,7 +2,10 @@ package bg.softuni.barberstudio.Web;
 
 import bg.softuni.barberstudio.Appointment.Model.Appointment;
 import bg.softuni.barberstudio.Appointment.Service.AppointmentService;
+import bg.softuni.barberstudio.Email.Service.NotificationService;
 import bg.softuni.barberstudio.Security.AuthenticationDetails;
+import bg.softuni.barberstudio.Service.Model.BarberService;
+import bg.softuni.barberstudio.Service.Service.BarberServiceService;
 import bg.softuni.barberstudio.User.Model.User;
 import bg.softuni.barberstudio.User.Service.UserService;
 import jakarta.validation.Valid;
@@ -20,10 +23,14 @@ public class AppointmentController {
 
     private final UserService userService;
     private final AppointmentService appointmentService;
+    private final BarberServiceService barberServiceService;
+    private final NotificationService notificationService;
 
-    public AppointmentController(UserService userService, AppointmentService appointmentService) {
+    public AppointmentController(UserService userService, AppointmentService appointmentService, BarberServiceService barberServiceService, NotificationService notificationService) {
         this.userService = userService;
         this.appointmentService = appointmentService;
+        this.barberServiceService = barberServiceService;
+        this.notificationService = notificationService;
     }
 
 
@@ -35,12 +42,17 @@ public class AppointmentController {
 
         User user  = userService.getById(authenticationDetails.getId());
 
+
         List<User> barbers = userService.findByUserRole();
+
+
         Map<String, Boolean> slots = new LinkedHashMap<>();
 
         if (barberId != null && date != null) {
             slots = appointmentService.getAvailableSlots(date, barberId);
         }
+
+        List<BarberService> services = barberServiceService.getServicesByBarberId(barberId);
 
         ModelAndView modelAndView = new ModelAndView("booking");
         modelAndView.addObject("barbers", barbers);
@@ -48,20 +60,28 @@ public class AppointmentController {
         modelAndView.addObject("date", date);
         modelAndView.addObject("user", user);
         modelAndView.addObject("barberId", barberId);
+        modelAndView.addObject("services",services);
+
 
         return modelAndView;
     }
+
+
 
     @PostMapping("/booking")
     public String bookAppointment(
             @RequestParam("timeSlot") String timeSlot,
             @RequestParam("barberId") UUID barberId,
             @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+            @RequestParam("serviceId") UUID serviceId,
             @AuthenticationPrincipal AuthenticationDetails authenticationDetails) {
+
+        System.out.println("Received booking request: timeSlot=" + timeSlot + ", barberId=" + barberId + ", date=" + date + ", serviceId=" + serviceId);
 
         UUID userId = authenticationDetails.getId();
         String customerName = authenticationDetails.getUsername();
-        appointmentService.bookAppointment(customerName, date, timeSlot, userId, barberId);
+        appointmentService.bookAppointment(customerName, date, timeSlot, userId, barberId, serviceId);
+
          return "redirect:/booking";
     }
 
@@ -70,7 +90,10 @@ public class AppointmentController {
                                     @PathVariable("appointmentId") UUID appointmentId) {
 
         UUID userId = authenticationDetails.getId();
+        Appointment appointment = appointmentService.getAppointmentById(appointmentId);
+
         appointmentService.cancelAppointmentByUserId(userId, appointmentId);
+        notificationService.deleteEmailNotification(userId, appointment.getAppointmentDate(),appointment.getTimeSlot());
 
         return "redirect:/profile";
     }

@@ -4,6 +4,7 @@ import bg.softuni.barberstudio.Appointment.Model.Appointment;
 import bg.softuni.barberstudio.Appointment.Repository.AppointmentRepository;
 import bg.softuni.barberstudio.Email.Service.NotificationService;
 import bg.softuni.barberstudio.Exception.DomainException;
+import bg.softuni.barberstudio.Service.Model.BarberService;
 import bg.softuni.barberstudio.Service.Service.BarberServiceService;
 import bg.softuni.barberstudio.User.Model.User;
 import bg.softuni.barberstudio.User.Service.UserService;
@@ -18,13 +19,14 @@ public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final UserService userService;
     private final NotificationService notificationService;
+    private final BarberServiceService barberService;
 
 
-    public AppointmentService(AppointmentRepository appointmentRepository, UserService userService, NotificationService notificationService, BarberServiceService service) {
+    public AppointmentService(AppointmentRepository appointmentRepository, UserService userService, NotificationService notificationService, BarberServiceService service, BarberServiceService barberService) {
         this.appointmentRepository = appointmentRepository;
         this.userService = userService;
         this.notificationService = notificationService;
-
+        this.barberService = barberService;
     }
 
     private static final List<String> TIME_SLOTS = Arrays.asList(
@@ -35,9 +37,6 @@ public class AppointmentService {
         User barber = userService.getById(barberId);
 
         List<Appointment> appointments = appointmentRepository.findByAppointmentDateAndBarber(date, barber);
-
-        System.out.println("Appointments found: " + appointments.size());
-        appointments.forEach(a -> System.out.println("Appointment: " + a.getCustomerName()));
 
         List<String> bookedSlots = appointments.stream()
                 .map(Appointment::getTimeSlot)
@@ -51,17 +50,15 @@ public class AppointmentService {
         return slots;
     }
 
-    public void bookAppointment(String customerName, LocalDate date, String timeSlot,UUID userId, UUID barberId) {
+    public void bookAppointment(String customerName, LocalDate date, String timeSlot,UUID userId, UUID barberId, UUID serviceId) {
 
         User user = userService.getById(userId);
         User barber = userService.getById(barberId);
-
 
         if (!getAvailableSlots(date, barberId).containsKey(timeSlot)) {
             throw new IllegalStateException("Time slot is not available");
         }
 
-        
         Optional<Appointment> existingAppointment = appointmentRepository
                 .findByCustomerNameAndAppointmentDateAndBarberAndTimeSlot(customerName, date, barber, timeSlot);
 
@@ -69,23 +66,25 @@ public class AppointmentService {
             throw new IllegalStateException("You already have an appointment on this date.");
         }
 
+        BarberService service = barberService.getBarberServiceById(serviceId);
+
         Appointment appointment = new Appointment();
         appointment.setCustomerName(customerName);
         appointment.setAppointmentDate(date);
         appointment.setTimeSlot(timeSlot);
         appointment.setUser(user);
         appointment.setBarber(barber);
+        appointment.setService(service);
 
         appointmentRepository.save(appointment);
-
-        notificationService.sentNotification(userId,barberId,barber.getUsername(),barber.getEmail(),user.getEmail(),date, timeSlot);
+        notificationService.sentNotification(userId,barberId,barber.getUsername(),barber.getEmail(),user.getEmail(),date, timeSlot,
+                appointment.getService().getName(),appointment.getService().getPrice());
     }
 
 
     public List<Appointment> getAppointmentsByBarber(UUID barberId) {
 
         User barber = userService.getById(barberId);
-
         return appointmentRepository.findByBarber(barber);
     }
 
@@ -98,10 +97,13 @@ public class AppointmentService {
     public void cancelAppointmentByUserId(UUID userId, UUID appointmentId) {
 
         List<Appointment> appointments = getAppointmentsByUser(userId);
-
         Appointment appointment = appointments.stream().filter(a -> a.getId().equals(appointmentId)).findFirst().orElseThrow(() -> new DomainException("No such appointment"));
-
         appointmentRepository.delete(appointment);
+    }
+
+    public Appointment getAppointmentById(UUID appointmentId) {
+
+        return appointmentRepository.findById(appointmentId).orElseThrow(() -> new DomainException("No such appointment"));
     }
 }
 

@@ -2,6 +2,7 @@ package bg.softuni.barberstudio.Appointment.Model;
 
 
 
+import bg.softuni.barberstudio.Service.Model.BarberService;
 import bg.softuni.barberstudio.User.Model.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -42,6 +43,9 @@ public class Appointment {
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "service_id", referencedColumnName = "id", nullable = false)
+    private BarberService service;
 
 
 

@@ -13,5 +13,9 @@ import java.util.UUID;
 public interface BarberServiceRepository extends JpaRepository<BarberService, UUID> {
 
 
-    List<BarberService> findAllByBarberId(User barberId);
+
+
+    List<BarberService> findAllByBarber(User barber);
+
+    List<BarberService> findAllByBarberId(UUID barberId);
 }

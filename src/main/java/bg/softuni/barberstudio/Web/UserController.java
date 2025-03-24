@@ -25,6 +25,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -97,10 +98,13 @@ public class UserController {
     @PreAuthorize("hasRole('BARBER')")
     public ModelAndView getBarberPanel(@AuthenticationPrincipal AuthenticationDetails authenticationDetails){
 
+
         User user  = userService.getById(authenticationDetails.getId());
+
 
         List<BarberService> services = barberServiceService.getAllServicesByAddedByBarber(user);
         List<Product> products = productService.getAllProductsByAddedByBarber(user);
+
 
 
         ModelAndView modelAndView = new ModelAndView("barber-panel");
@@ -112,8 +116,6 @@ public class UserController {
         modelAndView.addObject("services",services);
         modelAndView.addObject("products",products);
 
-
-
         return modelAndView;
     }
 
@@ -123,8 +125,8 @@ public class UserController {
         User user = userService.getById(authenticationDetails.getId());
         User barber = userService.getById(id);
 
-        List<BarberService> services = barberServiceService.getAllServices(id);
-        List<Comment> comments = commentService.getAllComments();
+        List<BarberService> services = barberServiceService.getAllServices(barber);
+        List<Comment> comments = commentService.getAllCommentsForBarber(barber.getId());
         List<Product> products = productService.getAllProducts(barber);
 
         ModelAndView modelAndView = new ModelAndView("barber");

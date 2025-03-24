@@ -4,12 +4,14 @@ package bg.softuni.barberstudio.Config;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
+@EnableMethodSecurity
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
     @Bean
@@ -20,10 +22,11 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/","/register","/contact","/services").permitAll()
                         .requestMatchers("/users").hasRole("ADMIN")
-                        .requestMatchers("/barbers").hasRole("BARBER")
+                        .requestMatchers("/barber-panel").hasRole("BARBER")
                         .anyRequest().authenticated()
         )
-                .formLogin(form -> form.loginPage("/login")
+
+                        .formLogin(form -> form.loginPage("/login")
 //                       .usernameParameter("username") -  - taken from html form, if is different need to change id
 //                       .passwordParameter("password") - taken from html form
                          .defaultSuccessUrl("/",true) // after login where to go

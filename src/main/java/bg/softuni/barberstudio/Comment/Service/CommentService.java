@@ -21,12 +21,13 @@ public class CommentService {
     }
 
 
-    public void createNewComment(CommentCreateRequest commentCreateRequest, User user) {
+    public void createNewComment(CommentCreateRequest commentCreateRequest, User user, User barber) {
 
         Comment comment = Comment.builder()
                 .comment(commentCreateRequest.getComment())
                 .imageUrl(user.getProfilePicture())
                 .author(user)
+                .barber(barber)
                 .build();
 
         commentRepository.save(comment);
@@ -36,5 +37,10 @@ public class CommentService {
     public List<Comment> getAllComments() {
 
         return commentRepository.findAll();
+    }
+
+    public List<Comment> getAllCommentsForBarber(UUID barberId) {
+
+        return commentRepository.findByBarberId(barberId);
     }
 }

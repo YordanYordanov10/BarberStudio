@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -30,8 +31,7 @@ public class BarberService {
     private double price;
 
     @ManyToOne
-    @JoinColumn(name = "user_id",referencedColumnName = "id", nullable = false)
-    private User barberId;
-
+    @JoinColumn(name = "barber_id",referencedColumnName = "id", nullable = false)
+    private User barber;
 
 }

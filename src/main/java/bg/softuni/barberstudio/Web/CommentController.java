@@ -41,7 +41,7 @@ public class CommentController {
             return "redirect:/barber/{id}";
         }
 
-        commentService.createNewComment(commentCreateRequest,user);
+        commentService.createNewComment(commentCreateRequest,user, barber);
 
         return "redirect:/barber/{id}";
     }

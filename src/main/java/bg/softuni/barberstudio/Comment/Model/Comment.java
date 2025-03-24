@@ -21,10 +21,14 @@ public class Comment {
     @Column(nullable = false)
     private String comment;
 
-
     private String imageUrl;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "author_id", referencedColumnName = "id", nullable = false)
     private User author;
+
+    @ManyToOne
+    @JoinColumn(name = "barber_id", referencedColumnName = "id", nullable = false)
+    private User barber;
+
 }
