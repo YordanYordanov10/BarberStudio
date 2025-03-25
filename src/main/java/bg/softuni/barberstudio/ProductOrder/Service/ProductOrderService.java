@@ -51,4 +51,8 @@ public class ProductOrderService {
 
         return productOrderRepository.getProductOrdersByProductAddedByBarber(barber);
     }
+
+    public List<ProductOrder> getAllProductOrders() {
+        return productOrderRepository.findAll();
+    }
 }

@@ -22,7 +22,7 @@ public class AppointmentService {
     private final BarberServiceService barberService;
 
 
-    public AppointmentService(AppointmentRepository appointmentRepository, UserService userService, NotificationService notificationService, BarberServiceService service, BarberServiceService barberService) {
+    public AppointmentService(AppointmentRepository appointmentRepository, UserService userService, NotificationService notificationService, BarberServiceService barberService) {
         this.appointmentRepository = appointmentRepository;
         this.userService = userService;
         this.notificationService = notificationService;
@@ -104,6 +104,16 @@ public class AppointmentService {
     public Appointment getAppointmentById(UUID appointmentId) {
 
         return appointmentRepository.findById(appointmentId).orElseThrow(() -> new DomainException("No such appointment"));
+    }
+
+    public void cancelAppointmentByBarberId(UUID barberId, UUID appointmentId) {
+        List<Appointment> appointments = getAppointmentsByBarber(barberId);
+        Appointment appointment = appointments.stream().filter(a -> a.getId().equals(appointmentId)).findFirst().orElseThrow(() -> new DomainException("No such appointment"));
+        appointmentRepository.delete(appointment);
+    }
+
+    public List<Appointment> getAllAppointments() {
+        return appointmentRepository.findAll();
     }
 }
 

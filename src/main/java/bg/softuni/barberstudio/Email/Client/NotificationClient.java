@@ -18,9 +18,15 @@ public interface NotificationClient {
     @PostMapping
     ResponseEntity<Void> sendNotification(@RequestBody EmailNotificationRequest emailNotification);
 
-    @DeleteMapping
+    @DeleteMapping("/byUser")
     ResponseEntity<Void> deleteNotification(@RequestParam(name = "userId") UUID userId,
                                             @RequestParam(name= "appointmentDate") LocalDate appointmentDate,
                                             @RequestParam(name = "timeSlot") String timeSlot);
+
+    @DeleteMapping("/byBarber")
+    ResponseEntity<Void> deleteNotificationByBarber(@RequestParam(name = "barberId") UUID barberId,
+                                            @RequestParam(name= "appointmentDate") LocalDate appointmentDate,
+                                            @RequestParam(name = "timeSlot") String timeSlot);
+
 
 }

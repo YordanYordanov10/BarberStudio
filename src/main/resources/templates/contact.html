@@ -85,32 +85,26 @@
                     <div class="card mb-5">
                         <div class="card-body p-sm-5">
                             <h2 class="text-center mb-4">Contact us</h2>
-                            <form>
-                                <div class="mb-3">
-                                    <label for="name-2" class="form-label">Name</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                        <input class="form-control" type="text" id="name-2" name="name" placeholder="Name" required maxlength="48">
-                                    </div>
+                            <div class="col-md-6">
+                                <div class="contact-form">
+                                    <h2>Send us a Message</h2>
+                                    <form th:action="@{/contact}" method="post" th:object="${contactRequest}">
+                                        <div class="mb-3">
+                                            <label for="name" class="form-label">Your Name</label>
+                                            <input type="text" class="form-control" id="name" th:field="*{name}" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">Your Email</label>
+                                            <input type="email" class="form-control" id="email" th:field="*{email}" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="message" class="form-label">Your Message</label>
+                                            <textarea class="form-control" id="message" rows="5" th:field="*{message}" required></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Send Message</button>
+                                    </form>
                                 </div>
-
-                                <div class="mb-3">
-                                    <label for="email-2" class="form-label">Email</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                                        <input class="form-control" type="email" id="email-2" name="email" placeholder="Email" required>
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="message-2" class="form-label">Message</label>
-                                    <textarea class="form-control" id="message-2" name="message" rows="6" placeholder="Message" required minlength="10"></textarea>
-                                </div>
-
-                                <div>
-                                    <button class="btn btn-primary d-block w-100" type="submit">Send</button>
-                                </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>

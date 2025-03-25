@@ -4,6 +4,7 @@ import bg.softuni.barberstudio.Email.Client.Dto.EmailNotificationRequest;
 import bg.softuni.barberstudio.Email.Client.NotificationClient;
 import bg.softuni.barberstudio.Exception.NotificationServiceFeignCallException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,9 +19,7 @@ public class NotificationService {
 
     private final NotificationClient notificationClient;
 
-    @Value("${notification-svc.failure-message.delete-notification}")
-    private String deleteNotificationFailedMessage;
-
+    @Autowired
     public NotificationService(NotificationClient notificationClient) {
         this.notificationClient = notificationClient;
     }
@@ -57,7 +56,16 @@ public class NotificationService {
             notificationClient.deleteNotification(userId,appointmentDate,timeSlot);
         } catch (Exception e) {
             log.error("Unable to call email-notification for clear notification email.".formatted(userId));
-            throw new NotificationServiceFeignCallException(deleteNotificationFailedMessage);
+            throw new NotificationServiceFeignCallException("Fail to delete email notification");
+        }
+    }
+
+    public void deleteEmailNotificationByBarber(UUID barberId, LocalDate appointmentDate, String timeSlot) {
+        try {
+            notificationClient.deleteNotificationByBarber(barberId,appointmentDate,timeSlot);
+        } catch (Exception e) {
+            log.error("Unable to call email-notification for clear notification email.".formatted(barberId));
+            throw new NotificationServiceFeignCallException("Fail to delete email notification");
         }
     }
 }

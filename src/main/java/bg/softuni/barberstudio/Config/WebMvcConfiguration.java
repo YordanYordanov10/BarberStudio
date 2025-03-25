@@ -22,6 +22,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/","/register","/contact","/services").permitAll()
                         .requestMatchers("/users").hasRole("ADMIN")
+                        .requestMatchers("/details-info").hasRole("ADMIN")
                         .requestMatchers("/barber-panel").hasRole("BARBER")
                         .anyRequest().authenticated()
         )

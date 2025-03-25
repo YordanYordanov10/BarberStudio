@@ -10,6 +10,7 @@ import bg.softuni.barberstudio.User.Model.User;
 import bg.softuni.barberstudio.User.Service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -76,8 +77,6 @@ public class AppointmentController {
             @RequestParam("serviceId") UUID serviceId,
             @AuthenticationPrincipal AuthenticationDetails authenticationDetails) {
 
-        System.out.println("Received booking request: timeSlot=" + timeSlot + ", barberId=" + barberId + ", date=" + date + ", serviceId=" + serviceId);
-
         UUID userId = authenticationDetails.getId();
         String customerName = authenticationDetails.getUsername();
         appointmentService.bookAppointment(customerName, date, timeSlot, userId, barberId, serviceId);
@@ -86,6 +85,7 @@ public class AppointmentController {
     }
 
     @DeleteMapping("/booking/cancel/{appointmentId}")
+    @PreAuthorize("hasRole('USER')")
     public String cancelAppointment(@AuthenticationPrincipal AuthenticationDetails authenticationDetails,
                                     @PathVariable("appointmentId") UUID appointmentId) {
 
@@ -96,6 +96,20 @@ public class AppointmentController {
         notificationService.deleteEmailNotification(userId, appointment.getAppointmentDate(),appointment.getTimeSlot());
 
         return "redirect:/profile";
+    }
+
+    @DeleteMapping("/barber/cancel-appointment/{appointmentId}")
+    @PreAuthorize("hasRole('BARBER')")
+    public String cancelAppointmentByBarber(@AuthenticationPrincipal AuthenticationDetails authenticationDetails,
+                                            @PathVariable("appointmentId") UUID appointmentId){
+
+        UUID barberId = authenticationDetails.getId();
+        Appointment appointment = appointmentService.getAppointmentById(appointmentId);
+
+        appointmentService.cancelAppointmentByBarberId(barberId,appointmentId);
+        notificationService.deleteEmailNotificationByBarber(barberId, appointment.getAppointmentDate(),appointment.getTimeSlot());
+
+        return "redirect:/booking";
     }
 
 }

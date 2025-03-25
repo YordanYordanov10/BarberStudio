@@ -177,5 +177,22 @@ public class UserController {
         return "redirect:/users";
     }
 
+    @GetMapping("/details-info")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView getDetailsInfo(@AuthenticationPrincipal AuthenticationDetails authenticationDetails){
+
+        User user  = userService.getById(authenticationDetails.getId());
+
+        List<Appointment> appointments = appointmentService.getAllAppointments();
+        List<ProductOrder> orders = productOrderService.getAllProductOrders();
+
+        ModelAndView modelAndView = new ModelAndView("details-info");
+        modelAndView.addObject("user",user);
+        modelAndView.addObject("appointments", appointments);
+        modelAndView.addObject("orders",orders);
+
+        return modelAndView;
+
+    }
 
 }

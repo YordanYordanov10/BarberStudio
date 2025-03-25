@@ -8,6 +8,7 @@ import bg.softuni.barberstudio.User.Model.User;
 import bg.softuni.barberstudio.User.Service.UserService;
 import bg.softuni.barberstudio.Web.Dto.ProductOrderRequest;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -54,6 +55,14 @@ public class ProductOrderController {
     @DeleteMapping("/profile/cancel-order/{productOrderId}")
     public String cancelOrder(@PathVariable("productOrderId") UUID productOrderId, @AuthenticationPrincipal AuthenticationDetails authenticationDetails) {
 
+        productOrderService.cancelProductOrder(productOrderId);
+
+        return "redirect:/profile";
+    }
+
+    @DeleteMapping("/barber/cancel-order/{productOrderId}")
+    @PreAuthorize("hasRole('BARBER')")
+    public String cancelOrderByBarber(@PathVariable("productOrderId") UUID productOrderId, @AuthenticationPrincipal AuthenticationDetails authenticationDetails) {
 
         productOrderService.cancelProductOrder(productOrderId);
 

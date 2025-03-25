@@ -21,11 +21,15 @@
 <body>
 
 <nav th:fragment="nav" class="navbar navbar-expand-lg bg-dark navbar-dark" style="font-size: 27px;backdrop-filter: opacity(0.70);-webkit-backdrop-filter: opacity(0.70);height: 50px;margin: 0px;position: sticky;overflow: visible;">
-  <div class="container"><a class="navbar-brand" th:href="@{/}" style="font-size: 30px;height: 55px;margin: 0px;padding: 0px 0px;">Barber Studio</a><button data-bs-toggle="collapse" data-bs-target="#navbarNav" class="navbar-toggler" type="button"><span class="navbar-toggler-icon"></span></button>
+  <div class="container"><a class="navbar-brand" th:href="@{/}" style="font-size: 30px;height: 55px;margin: 0px;padding: 0px 0px;">
+    <i class="fas fa-razor" style="color: #1ddec1; margin-right: 8px;"></i>
+    BarberStudio
+  </a><button data-bs-toggle="collapse" data-bs-target="#navbarNav" class="navbar-toggler" type="button" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
     <div class="collapse navbar-collapse fs-2 ps- ms-" id="navbarNav" style="position: relative;padding: 0px;border-width: 0px;margin: 0px;height: 64px;">
       <ul class="navbar-nav ms-auto">
 
         <li class="nav-item" sec:authorize="hasRole('ROLE_BARBER')" ><a class="nav-link pe- me- ms-" th:href="@{/barber-panel}">Barber-Panel</a></li>
+        <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')" ><a class="nav-link pe- me- ms-" th:href="@{/details-info}">Details</a></li>
         <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')" ><a class="nav-link pe- me- ms-" th:href="@{/users}">Users</a></li>
         <li class="nav-item"><a class="nav-link pe- me- ms-" th:href="@{/services}">Services</a></li>
         <li class="nav-item"><a class="nav-link" th:href="@{/booking}">Booking</a></li>
