@@ -165,10 +165,10 @@
                     </thead>
                     <tbody>
                         <tr th:each="message : ${messages}">
-                            <td th:text="${#temporals.format(message.date, 'dd-MM-yyyy HH:mm')}">01-01-2024 10:00</td>
+                            <td th:text="${#temporals.format(message.createdAt, 'dd-MM-yyyy HH:mm')}">01-01-2024 10:00</td>
                             <td th:text="${message.name}">John Doe</td>
                             <td th:text="${message.email}">john@example.com</td>
-                            <td th:text="${#strings.length(message.content) > 50 ? #strings.substring(message.content, 0, 47) + '...' : message.content}">Message preview...</td>
+                            <td th:text="${#strings.length(message.message) > 50 ? #strings.substring(message.message, 0, 47) + '...' : message.message}">Message preview...</td>
                             <td>
                                 <button type="button" class="btn btn-view" 
                                         data-bs-toggle="modal" 
@@ -196,9 +196,9 @@
                 </div>
                 <div class="modal-body">
                     <p><strong>Email:</strong> <span th:text="${message.email}">john@example.com</span></p>
-                    <p><strong>Date:</strong> <span th:text="${#temporals.format(message.date, 'dd-MM-yyyy HH:mm')}">01-01-2024 10:00</span></p>
+                    <p><strong>Date:</strong> <span th:text="${#temporals.format(message.createdAt, 'dd-MM-yyyy HH:mm')}">01-01-2024 10:00</span></p>
                     <p><strong>Message:</strong></p>
-                    <p th:text="${message.content}">Full message content here...</p>
+                    <p th:text="${message.message}">Full message content here...</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-view" data-bs-dismiss="modal">Close</button>

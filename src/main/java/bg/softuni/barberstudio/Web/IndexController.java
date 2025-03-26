@@ -5,6 +5,7 @@ import bg.softuni.barberstudio.Comment.Service.CommentService;
 import bg.softuni.barberstudio.Security.AuthenticationDetails;
 import bg.softuni.barberstudio.User.Model.User;
 import bg.softuni.barberstudio.User.Service.UserService;
+import bg.softuni.barberstudio.Web.Dto.ContactRequest;
 import bg.softuni.barberstudio.Web.Dto.LoginRequest;
 import bg.softuni.barberstudio.Web.Dto.RegisterRequest;
 import jakarta.servlet.http.HttpSession;
@@ -97,18 +98,5 @@ public class IndexController {
         userService.register(registerRequest);
         return new ModelAndView("redirect:/login");
     }
-
-    @GetMapping("/contact")
-    public ModelAndView getContactPage(){
-
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("contact");
-
-        return modelAndView;
-    }
-
-
-
-
 
 }

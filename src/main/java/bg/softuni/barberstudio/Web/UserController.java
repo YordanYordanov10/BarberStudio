@@ -4,6 +4,8 @@ import bg.softuni.barberstudio.Appointment.Model.Appointment;
 import bg.softuni.barberstudio.Appointment.Service.AppointmentService;
 import bg.softuni.barberstudio.Comment.Model.Comment;
 import bg.softuni.barberstudio.Comment.Service.CommentService;
+import bg.softuni.barberstudio.Contact.Model.Contact;
+import bg.softuni.barberstudio.Contact.Service.ContactService;
 import bg.softuni.barberstudio.Product.Model.Product;
 import bg.softuni.barberstudio.Product.Service.ProductService;
 import bg.softuni.barberstudio.ProductOrder.Model.ProductOrder;
@@ -38,15 +40,17 @@ public class UserController {
     private final CommentService commentService;
     private final ProductService productService;
     private final ProductOrderService productOrderService;
+    private final ContactService contactService;
 
     @Autowired
-    public UserController(UserService userService, AppointmentService appointmentService, BarberServiceService barberServiceService, CommentService commentService, ProductService productService, ProductOrderService productOrderService) {
+    public UserController(UserService userService, AppointmentService appointmentService, BarberServiceService barberServiceService, CommentService commentService, ProductService productService, ProductOrderService productOrderService, ContactService contactService) {
         this.userService = userService;
         this.appointmentService = appointmentService;
         this.barberServiceService = barberServiceService;
         this.commentService = commentService;
         this.productService = productService;
         this.productOrderService = productOrderService;
+        this.contactService = contactService;
     }
 
     @GetMapping("/profile")
@@ -185,11 +189,13 @@ public class UserController {
 
         List<Appointment> appointments = appointmentService.getAllAppointments();
         List<ProductOrder> orders = productOrderService.getAllProductOrders();
+        List<Contact> messages = contactService.getAllContact();
 
         ModelAndView modelAndView = new ModelAndView("details-info");
         modelAndView.addObject("user",user);
         modelAndView.addObject("appointments", appointments);
         modelAndView.addObject("orders",orders);
+        modelAndView.addObject("messages", messages);
 
         return modelAndView;
 
