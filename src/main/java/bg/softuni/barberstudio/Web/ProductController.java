@@ -37,18 +37,29 @@ public class ProductController {
 
     @PostMapping("/barber-panel/add-product")
     @PreAuthorize("hasRole('BARBER')")
-    public String addProduct(@AuthenticationPrincipal AuthenticationDetails authenticationDetails, @Valid BarberCreateProduct barberCreateProduct, BindingResult bindingResult) {
+    public String addProduct(@AuthenticationPrincipal AuthenticationDetails authenticationDetails,
+                             @Valid BarberCreateProduct barberCreateProduct,
+                             BindingResult bindingResult,
+                             RedirectAttributes redirectAttributes) {
 
         User barber = userService.getById(authenticationDetails.getId());
 
         if(bindingResult.hasErrors()){
+            redirectAttributes.addFlashAttribute("barberCreateProduct", barberCreateProduct);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.barberCreateProduct", bindingResult);
             return "redirect:/barber-panel";
         }
 
-        productService.createNewProduct(barberCreateProduct, barber);
+        try {
+            productService.createNewProduct(barberCreateProduct, barber);
+            redirectAttributes.addFlashAttribute("success", "Product added successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Failed to add product: " + e.getMessage());
+        }
 
         return "redirect:/barber-panel";
     }
+
 
     @PutMapping("/barber-panel/edit-product/{productId}")
     @PreAuthorize("hasRole('BARBER')")

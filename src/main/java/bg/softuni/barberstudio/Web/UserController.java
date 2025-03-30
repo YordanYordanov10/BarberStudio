@@ -91,7 +91,6 @@ public class UserController {
             return modelAndView;
         }
 
-
         userService.editUserDetails(authenticationDetails.getId(), userEditRequest);
 
         return new ModelAndView("redirect:/profile");

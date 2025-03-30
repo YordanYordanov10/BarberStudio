@@ -22,7 +22,7 @@ public class ProductOrderService {
     }
 
 
-    public void createOrderProduct(User buyer, Product product, ProductOrderRequest productOrderRequest) {
+    public ProductOrder createOrderProduct(User buyer, Product product, ProductOrderRequest productOrderRequest) {
 
         ProductOrder productOrder = ProductOrder.builder()
                 .buyer(buyer)
@@ -32,7 +32,7 @@ public class ProductOrderService {
                 .totalPrice(productOrderRequest.getQuantity() * product.getPrice())
                 .build();
 
-        productOrderRepository.save(productOrder);
+        return productOrderRepository.save(productOrder);
     }
 
     public List<ProductOrder> getProductOrderByUserId(User buyer) {

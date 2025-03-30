@@ -30,7 +30,7 @@ public class ProductService {
         this.productOrderRepository = productOrderRepository;
     }
 
-    public void createNewProduct(BarberCreateProduct barberCreateProduct, User barber) {
+    public Product createNewProduct(BarberCreateProduct barberCreateProduct, User barber) {
 
         Product product = Product.builder()
                 .name(barberCreateProduct.getName())
@@ -41,7 +41,7 @@ public class ProductService {
                 .imageUrl(barberCreateProduct.getImageUrl())
                 .build();
 
-        productRepository.save(product);
+        return productRepository.save(product);
     }
 
     public List<Product> getAllProducts(User barber) {

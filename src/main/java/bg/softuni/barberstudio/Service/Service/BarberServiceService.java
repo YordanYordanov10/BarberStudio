@@ -23,7 +23,7 @@ public class BarberServiceService {
     }
 
 
-    public void addNewService(BarberServiceCreate barberServiceCreate, User barber) {
+    public BarberService addNewService(BarberServiceCreate barberServiceCreate, User barber) {
 
         BarberService barberService = new BarberService();
         barberService.setName(barberServiceCreate.getName());
@@ -31,7 +31,7 @@ public class BarberServiceService {
         barberService.setPrice(barberServiceCreate.getPrice());
         barberService.setBarber(barber);
 
-        barberServiceRepository.save(barberService);
+        return barberServiceRepository.save(barberService);
     }
 
     public List<BarberService> getAllServices(User barber) {

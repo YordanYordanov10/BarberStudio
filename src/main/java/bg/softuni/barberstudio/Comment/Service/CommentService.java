@@ -21,7 +21,7 @@ public class CommentService {
     }
 
 
-    public void createNewComment(CommentCreateRequest commentCreateRequest, User user, User barber) {
+    public Comment createNewComment(CommentCreateRequest commentCreateRequest, User user, User barber) {
 
         Comment comment = Comment.builder()
                 .comment(commentCreateRequest.getComment())
@@ -30,7 +30,7 @@ public class CommentService {
                 .barber(barber)
                 .build();
 
-        commentRepository.save(comment);
+        return commentRepository.save(comment);
 
     }
 

@@ -12,13 +12,14 @@ import lombok.*;
 import java.util.List;
 import java.util.UUID;
 
-@Entity
+
 @Builder
 @Getter
 @Setter
-@Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "users")
 public class User {
 
 

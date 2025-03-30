@@ -1,4 +1,4 @@
-package User;
+package bg.softuni.barberstudio.User;
 
 import bg.softuni.barberstudio.Exception.DomainException;
 import bg.softuni.barberstudio.Security.AuthenticationDetails;
@@ -188,24 +188,6 @@ public class UserServiceUTest {
         assertThat(users).hasSize(3);
     }
 
-    @Test
-    void givenUserRoleUpdate_whenUpdateUserRole(){
-        //Given
-        UUID id = UUID.randomUUID();
-        User user = User.builder()
-                .id(id)
-                .build();
 
-
-    }
-
-//    @CacheEvict(value = "users", allEntries = true)
-//    public void updateUserRole(UUID userId, String role) {
-//
-//       User user = getById(userId);
-//       user.setRole(UserRole.valueOf(role));
-//       userRepository.save(user);
-//
-//    }
 
 }

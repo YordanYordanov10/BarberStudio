@@ -20,7 +20,7 @@ public class ContactService {
     }
 
 
-    public void createContact(ContactRequest contactRequest) {
+    public Contact createContact(ContactRequest contactRequest) {
 
         Contact contact = Contact.builder()
                 .name(contactRequest.getName())
@@ -29,7 +29,7 @@ public class ContactService {
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        contactRepository.save(contact);
+        return contactRepository.save(contact);
     }
 
     public List<Contact> getAllContact() {
