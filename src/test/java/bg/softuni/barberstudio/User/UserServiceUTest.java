@@ -189,5 +189,32 @@ public class UserServiceUTest {
     }
 
 
+    @Test
+    void givenUsersWithBarberRole_shouldReturnList() {
+
+        User barber = User.builder()
+                .id(UUID.randomUUID())
+                .role(UserRole.BARBER)
+                .build();
+
+        User barber1 = User.builder()
+                .id(UUID.randomUUID())
+                .role(UserRole.BARBER)
+                .build();
+        List<User> barbers = List.of(barber,barber1);
+
+        when(userRepository.findByRole(UserRole.BARBER)).thenReturn(barbers);
+
+        // Act
+        List<User> result = userService.findByUserRole();
+
+        // Assert
+        assertEquals(2, result.size());
+        assertEquals(barbers, result);
+        verify(userRepository, times(1)).findByRole(UserRole.BARBER);
+    }
+
+
+
 
 }

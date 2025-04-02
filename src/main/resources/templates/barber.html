@@ -212,7 +212,7 @@
         <div class="d-flex justify-content-center">
             <img th:src="${barber.getProfilePicture()}" class="rounded-circle">
         </div>
-        <h2 th:text="${barber.firstName + ' ' + barber.lastName}"></h2>
+        <h2 th:text="${#strings.isEmpty(barber.firstName) && #strings.isEmpty(barber.lastName) ? 'John Doe' : barber.firstName + ' ' + barber.lastName}"></h2>
         <p class="text-muted" th:text="${barber.username}"></p>
         <div class="d-flex justify-content-center">
             <a class="btn btn-primary" th:href="@{/booking}">Book Now</a>

@@ -55,11 +55,11 @@ public class ContactServiceUTest {
         Contact createdContact = contactService.createContact(contactRequest);
 
 
-        assertNotNull(createdContact, "Contact should not be null");
-        assertEquals(contactRequest.getName(), createdContact.getName(), "Names should match");
-        assertEquals(contactRequest.getEmail(), createdContact.getEmail(), "Emails should match");
-        assertEquals(contactRequest.getMessage(), createdContact.getMessage(), "Messages should match");
-        assertNotNull(createdContact.getCreatedAt(), "CreatedAt should not be null");
+        assertNotNull(createdContact);
+        assertEquals(contactRequest.getName(), createdContact.getName());
+        assertEquals(contactRequest.getEmail(), createdContact.getEmail());
+        assertEquals(contactRequest.getMessage(), createdContact.getMessage());
+        assertNotNull(createdContact.getCreatedAt());
 
         verify(contactRepository, times(1)).save(any(Contact.class));
 

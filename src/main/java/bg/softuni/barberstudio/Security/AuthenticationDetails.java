@@ -1,9 +1,7 @@
 package bg.softuni.barberstudio.Security;
 
 import bg.softuni.barberstudio.User.Model.UserRole;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +13,7 @@ import java.util.UUID;
 
 @Data
 @AllArgsConstructor
+@Builder
 public class AuthenticationDetails implements UserDetails {
 
     private UUID id;

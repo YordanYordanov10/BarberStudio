@@ -8,6 +8,7 @@ import bg.softuni.barberstudio.Service.Model.BarberService;
 import bg.softuni.barberstudio.Service.Service.BarberServiceService;
 import bg.softuni.barberstudio.User.Model.User;
 import bg.softuni.barberstudio.User.Service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -16,12 +17,13 @@ import java.util.*;
 @Service
 public class AppointmentService {
 
+
     private final AppointmentRepository appointmentRepository;
     private final UserService userService;
     private final NotificationService notificationService;
     private final BarberServiceService barberService;
 
-
+    @Autowired
     public AppointmentService(AppointmentRepository appointmentRepository, UserService userService, NotificationService notificationService, BarberServiceService barberService) {
         this.appointmentRepository = appointmentRepository;
         this.userService = userService;

@@ -119,21 +119,10 @@ public class ProductControllerApiTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/barber-panel"));
 
-        // 4. Verify interactions
+
         verify(userService).getById(mockUser1.getId());
         verify(productService).createNewProduct(any(BarberCreateProduct.class), eq(mockUser1));
     }
 
 
-//
-//        User barber = userService.getById(authenticationDetails.getId());
-//
-//        if(bindingResult.hasErrors()){
-//            return "redirect:/barber-panel";
-//        }
-//
-//        productService.createNewProduct(barberCreateProduct, barber);
-//
-//        return "redirect:/barber-panel";
-//    }
 }

@@ -146,8 +146,6 @@ public class UserController {
         modelAndView.addObject("productOrderRequest", new ProductOrderRequest());
         modelAndView.addObject("products", products);
 
-
-
         return modelAndView;
     }
 
