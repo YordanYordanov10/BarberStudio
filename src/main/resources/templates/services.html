@@ -130,10 +130,9 @@
                     <div class="service-info">
                         <h3 class="service-name" th:text="${service.name}">Service Name</h3>
                         <p class="service-description" th:text="${service.description}">Service description</p>
-                        <p class="price" th:text="${service.price + ' BGN'}">Price</p>
                     </div>
                 </div>
-                <span class="service-price" th:text="${'$' + service.price}">$0.00</span>
+                <span class="service-price" th:text="${'BGN ' + service.price}">$0.00</span>
             </div>
         </div>
 

@@ -1,12 +1,11 @@
 package bg.softuni.barberstudio.Email.Client;
 
 import bg.softuni.barberstudio.Email.Client.Dto.EmailNotificationRequest;
+import bg.softuni.barberstudio.Email.Client.Dto.NotificationSentEmail;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -27,6 +26,13 @@ public interface NotificationClient {
     ResponseEntity<Void> deleteNotificationByBarber(@RequestParam(name = "barberId") UUID barberId,
                                             @RequestParam(name= "appointmentDate") LocalDate appointmentDate,
                                             @RequestParam(name = "timeSlot") String timeSlot);
+
+
+    @GetMapping("/sent-date")
+    ResponseEntity<NotificationSentEmail> emailNotificationIsSent(@RequestParam("barberId") UUID barberId,
+                                                                  @RequestParam("appointmentDate") LocalDate appointmentDate,
+                                                                  @RequestParam("timeSlot") String timeSlot
+    );
 
 
 }

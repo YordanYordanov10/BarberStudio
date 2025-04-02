@@ -1,6 +1,7 @@
 package bg.softuni.barberstudio.Email.Service;
 
 import bg.softuni.barberstudio.Email.Client.Dto.EmailNotificationRequest;
+import bg.softuni.barberstudio.Email.Client.Dto.NotificationSentEmail;
 import bg.softuni.barberstudio.Email.Client.NotificationClient;
 import bg.softuni.barberstudio.Exception.NotificationServiceFeignCallException;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.management.Notification;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -55,7 +57,7 @@ public class NotificationService {
         try {
             notificationClient.deleteNotification(userId,appointmentDate,timeSlot);
         } catch (Exception e) {
-            log.error("Unable to call email-notification for clear notification email.".formatted(userId));
+            log.error("Unable to call email-notification for [%s] clear notification email.".formatted(userId));
             throw new NotificationServiceFeignCallException("Fail to delete email notification");
         }
     }
@@ -64,8 +66,16 @@ public class NotificationService {
         try {
             notificationClient.deleteNotificationByBarber(barberId,appointmentDate,timeSlot);
         } catch (Exception e) {
-            log.error("Unable to call email-notification for clear notification email.".formatted(barberId));
+            log.error("Unable to call email-notification for [%s] clear notification email.".formatted(barberId));
             throw new NotificationServiceFeignCallException("Fail to delete email notification");
         }
     }
+
+    public NotificationSentEmail CheckEmailNotificationDateSent(UUID barberId, LocalDate appointmentDate, String timeSlot) {
+
+        ResponseEntity<NotificationSentEmail> httpResponse = notificationClient.emailNotificationIsSent(barberId,appointmentDate,timeSlot);
+
+        return httpResponse.getBody();
+    }
+
 }

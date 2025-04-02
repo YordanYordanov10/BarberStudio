@@ -6,6 +6,8 @@ import bg.softuni.barberstudio.Comment.Model.Comment;
 import bg.softuni.barberstudio.Comment.Service.CommentService;
 import bg.softuni.barberstudio.Contact.Model.Contact;
 import bg.softuni.barberstudio.Contact.Service.ContactService;
+import bg.softuni.barberstudio.Email.Client.Dto.NotificationSentEmail;
+import bg.softuni.barberstudio.Email.Service.NotificationService;
 import bg.softuni.barberstudio.Product.Model.Product;
 import bg.softuni.barberstudio.Product.Service.ProductService;
 import bg.softuni.barberstudio.ProductOrder.Model.ProductOrder;
@@ -27,6 +29,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -41,9 +44,10 @@ public class UserController {
     private final ProductService productService;
     private final ProductOrderService productOrderService;
     private final ContactService contactService;
+    private final NotificationService notificationService;
 
     @Autowired
-    public UserController(UserService userService, AppointmentService appointmentService, BarberServiceService barberServiceService, CommentService commentService, ProductService productService, ProductOrderService productOrderService, ContactService contactService) {
+    public UserController(UserService userService, AppointmentService appointmentService, BarberServiceService barberServiceService, CommentService commentService, ProductService productService, ProductOrderService productOrderService, ContactService contactService, NotificationService notificationService) {
         this.userService = userService;
         this.appointmentService = appointmentService;
         this.barberServiceService = barberServiceService;
@@ -51,6 +55,7 @@ public class UserController {
         this.productService = productService;
         this.productOrderService = productOrderService;
         this.contactService = contactService;
+        this.notificationService = notificationService;
     }
 
     @GetMapping("/profile")
@@ -190,6 +195,7 @@ public class UserController {
         List<ProductOrder> orders = productOrderService.getAllProductOrders();
         List<Contact> messages = contactService.getAllContact();
 
+
         ModelAndView modelAndView = new ModelAndView("details-info");
         modelAndView.addObject("user",user);
         modelAndView.addObject("appointments", appointments);
@@ -198,6 +204,27 @@ public class UserController {
 
         return modelAndView;
 
+    }
+
+    @GetMapping("/details-info/check-email")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView getDetailsInfoCheckEmail(@RequestParam UUID barberId,
+                                                 @RequestParam(name= "appointmentDate") LocalDate appointmentDate,
+                                                 @RequestParam(name = "timeSlot") String timeSlot,
+                                                 @AuthenticationPrincipal AuthenticationDetails authenticationDetails){
+
+
+        NotificationSentEmail notificationSentDate = notificationService.CheckEmailNotificationDateSent(barberId,appointmentDate,timeSlot);
+
+        ModelAndView modelAndView = new ModelAndView("details-info");
+
+        modelAndView.addObject("appointments", appointmentService.getAllAppointments());
+        modelAndView.addObject("orders", productOrderService.getAllProductOrders());
+        modelAndView.addObject("messages", contactService.getAllContact());
+
+        modelAndView.addObject("notificationSentDate",notificationSentDate);
+
+        return modelAndView;
     }
 
 }

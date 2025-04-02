@@ -41,10 +41,7 @@ public class BookAppointmentITest {
     @Autowired
     private AppointmentRepository appointmentRepository;
 
-    @BeforeEach
-    void setUp() {
-        appointmentRepository.deleteAll();
-    }
+
 
     @Test
     void shouldBookAppointmentSuccessfully() {
@@ -84,8 +81,8 @@ public class BookAppointmentITest {
 
         Appointment bookedAppointment = optionalAppointment.get();
         assertEquals(date, bookedAppointment.getAppointmentDate());
-        assertEquals(registerBarber.getId(), bookedAppointment.getBarber().getId(), "Barber ID should match");
-        assertEquals(timeSlot, bookedAppointment.getTimeSlot(), "Time slot should match");
-        assertEquals(service.getId(), bookedAppointment.getService().getId(), "Service ID should match");
+        assertEquals(registerBarber.getId(), bookedAppointment.getBarber().getId());
+        assertEquals(timeSlot, bookedAppointment.getTimeSlot());
+        assertEquals(service.getId(), bookedAppointment.getService().getId());
     }
 }

@@ -199,7 +199,10 @@
 <div class="hero-section">
     <img src="/css/img/pexels-nickoloui-1319459.jpg" alt="Barber Shop" class="hero-image">
     <div class="hero-content">
-        <h1>Welcome to Barber Studio</h1>
+        <h1>
+            <span th:if="${isLoggedIn}" th:text="'Welcome, ' + ${user.username} + '!'"></span>
+            <span th:unless="${isLoggedIn}">Welcome to Barber Studio</span>
+        </h1>
         <p>Experience the art of grooming</p>
         <a th:href="@{/services}" class="cta-button">Book Appointment</a>
     </div>
@@ -211,9 +214,10 @@
     <div class="row">
         <div class="col-md-4" th:each="barber : ${barbers}">
             <div class="barber-card">
-                <img th:src="${barber.getProfilePicture()}" alt="Barber" class="barber-image">
+                <img th:src="${#strings.isEmpty(barber.profilePicture) ? 'https://icons.veryicon.com/png/o/miscellaneous/user-avatar/user-avatar-male-5.png' : barber.profilePicture}"
+                     alt="Barber" class="barber-image">
                 <div class="barber-info">
-                    <h3 class="barber-name" th:text="${barber.firstName + ' ' + barber.lastName}">Barber Name</h3>
+                    <h3 class="barber-name" th:text="${#strings.isEmpty(barber.firstName) && #strings.isEmpty(barber.lastName) ? 'John Doe' : barber.firstName + ' ' + barber.lastName}">Barber Name</h3>
                     <p class="text-muted" th:text="${barber.username}">Barber username</p>
                     <a th:href="@{/barber/{id}(id=${barber.id})}" class="cta-button">View Profile</a>
         </div>
