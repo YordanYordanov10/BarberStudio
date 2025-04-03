@@ -206,21 +206,26 @@ public class UserController {
 
     @GetMapping("/details-info/check-email")
     @PreAuthorize("hasRole('ADMIN')")
-    public ModelAndView getDetailsInfoCheckEmail(@RequestParam UUID barberId,
-                                                 @RequestParam(name= "appointmentDate") LocalDate appointmentDate,
-                                                 @RequestParam(name = "timeSlot") String timeSlot,
-                                                 @AuthenticationPrincipal AuthenticationDetails authenticationDetails){
+    public ModelAndView getDetailsInfoCheckEmail(
+            @RequestParam UUID barberId,
+            @RequestParam(name = "appointmentDate") LocalDate appointmentDate,
+            @RequestParam(name = "timeSlot") String timeSlot,
+            @AuthenticationPrincipal AuthenticationDetails authenticationDetails) {
 
-
-        NotificationSentEmail notificationSentDate = notificationService.CheckEmailNotificationDateSent(barberId,appointmentDate,timeSlot);
+        // Get the specific appointment
+        Appointment appointment = appointmentService.findByBarberIdAndDateAndTime(barberId, appointmentDate, timeSlot);
+        NotificationSentEmail notificationSentDate = notificationService.CheckEmailNotificationDateSent(barberId, appointmentDate, timeSlot);
 
         ModelAndView modelAndView = new ModelAndView("details-info");
 
+        // Add all collections (they'll be hidden when viewing single appointment)
         modelAndView.addObject("appointments", appointmentService.getAllAppointments());
         modelAndView.addObject("orders", productOrderService.getAllProductOrders());
         modelAndView.addObject("messages", contactService.getAllContact());
 
-        modelAndView.addObject("notificationSentDate",notificationSentDate);
+        // Add the specific appointment to show
+        modelAndView.addObject("selectedAppointment", appointment);
+        modelAndView.addObject("notificationSentDate", notificationSentDate);
 
         return modelAndView;
     }

@@ -5,30 +5,34 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Contact Us</title>
-
+    <link rel="icon" type="image/png" href="/img/BarberStudioLogo.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
+        .contact-card {
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
         .form-control {
             background-color: #f2f2f2;
             border: 1px solid #ccc;
             border-radius: 10px;
             padding: 12px;
             font-size: 1.1rem;
-        }
-
-        .btn {
-            margin-top: 25px;
+            margin-bottom: 1rem;
         }
 
         .btn-primary {
             background-color: #1ddec1;
             border-color: #1ddec1;
             border-radius: 10px;
-            padding: 12px;
+            padding: 12px 24px;
             font-size: 1.2rem;
             font-weight: bold;
+            width: 100%;
+            margin-top: 1rem;
         }
 
         .btn-primary:hover {
@@ -36,85 +40,63 @@
             border-color: #18c0a7;
         }
 
-        .input-group-text {
-            background-color: #f2f2f2;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            padding: 12px;
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
         }
 
-        .mb-4-spacing {
-            margin-bottom: 24px;
-        }
-
-        .login-register-links {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 10px;
-        }
-
-        .register-link, .login-link {
-            text-decoration: none;
-            font-size: 1rem;
-            color: #1ddec1;
+        .contact-title {
+            color: #333;
+            margin-bottom: 2rem;
+            text-align: center;
             font-weight: bold;
-            font-size: xx-large;
         }
 
-        .register-link:hover, .login-link:hover {
-            color: #18c0a7;
-        }
-
-        .disabled {
-            color: #ccc;
-            pointer-events: none;
+        .error-message {
+            color: #dc3545;
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
         }
     </style>
-
 </head>
 
 <body>
-    <section class="position-relative py-4 py-xl-5">
-        <div class="container position-relative">
-            <div class="row d-flex justify-content-center">
-                <div class="col-md-8 col-lg-6 col-xl-5 col-xxl-4">
-                    <div class="card mb-5">
-                        <div class="card-body p-sm-5">
-                            <h2 class="text-center mb-4">Contact us</h2>
-                            <div class="col-md-6">
-                                <div class="contact-form">
-                                    <h2>Send us a Message</h2>
-                                    <form th:action="@{/contact}" method="POST" th:object="${contactRequest}">
-                                        <div class="mb-3">
-                                            <label for="name" class="form-label">Your Name</label>
-                                            <input type="text" class="form-control" id="name" th:field="*{name}" required>
-                                            <p class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="email" class="form-label">Your Email</label>
-                                            <input type="email" class="form-control" id="email" th:field="*{email}" required>
-                                            <p class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="message" class="form-label">Your Message</label>
-                                            <textarea class="form-control" id="message" rows="5" th:field="*{message}" required></textarea>
-                                            <p class="text-danger" th:if="${#fields.hasErrors('message')}" th:errors="*{message}"></p>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Send Message</button>
-                                    </form>
-                                </div>
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card contact-card">
+                    <div class="card-body p-4 p-md-5">
+                        <h2 class="contact-title">Contact Us</h2>
+                        <form th:action="@{/contact}" method="POST" th:object="${contactRequest}">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Your Name</label>
+                                <input type="text" class="form-control" id="name" th:field="*{name}" required>
+                                <p class="error-message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
                             </div>
-                        </div>
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Your Email</label>
+                                <input type="email" class="form-control" id="email" th:field="*{email}" required>
+                                <p class="error-message" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Your Message</label>
+                                <textarea class="form-control" id="message" rows="5" th:field="*{message}" required></textarea>
+                                <p class="error-message" th:if="${#fields.hasErrors('message')}" th:errors="*{message}"></p>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Send Message</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Bootstrap JS (CDN) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
+<!-- Bootstrap JS (CDN) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

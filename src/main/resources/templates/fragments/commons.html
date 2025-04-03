@@ -6,6 +6,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
   <title>Studio Professionals</title>
+  <link rel="icon" type="image/png" href="/img/BarberStudioLogo.png">
   <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Akaya+Kanadaka&amp;display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alegreya+SC&amp;display=swap">
@@ -35,7 +36,9 @@
         <li class="nav-item"><a class="nav-link" th:href="@{/booking}">Booking</a></li>
         <li class="nav-item" th:if="${user}"><a class="nav-link" th:href="@{/profile}">My Profile</a></li>
         <li class="nav-item"><a class="nav-link" th:href="@{/contact}">Contact Us</a></li>
-        <li class="nav-item" th:unless="${user}" ><a class="nav-link mb- pb- mt- pe- py- my- ms-" th:href="@{/login}" style="background: #212527;height: 57px;">Login</a></li>
+        <li class="nav-item" th:unless="${user}">
+          <a class="nav-link" th:href="@{/login}">Login</a>
+        </li>
         <li class="nav-item" th:unless="${user}"><a class="nav-link" th:href="@{/register}">Register</a></li>
         <li class="nav-item" th:if="${user}"><a class="nav-link" th:href="@{/logout}">Log Out</a></li>
       </ul>

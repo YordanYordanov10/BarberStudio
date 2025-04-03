@@ -117,6 +117,10 @@ public class AppointmentService {
     public List<Appointment> getAllAppointments() {
         return appointmentRepository.findAll();
     }
+
+    public Appointment findByBarberIdAndDateAndTime(UUID barberId, LocalDate appointmentDate, String timeSlot) {
+        return appointmentRepository.findByAppointmentDateAndBarberIdAndTimeSlot(appointmentDate,barberId,timeSlot);
+    }
 }
 
 

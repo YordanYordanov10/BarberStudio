@@ -22,4 +22,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
     List<Appointment> findByUserId(UUID userId);
 
     void deleteAppointmentById(UUID appointmentId);
+
+    Appointment findByAppointmentDateAndBarberIdAndTimeSlot(LocalDate appointmentDate, UUID barberId, String timeSlot);
 }
