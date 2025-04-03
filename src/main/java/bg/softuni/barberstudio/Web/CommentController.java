@@ -5,6 +5,7 @@ import bg.softuni.barberstudio.Security.AuthenticationDetails;
 import bg.softuni.barberstudio.User.Model.User;
 import bg.softuni.barberstudio.User.Service.UserService;
 import bg.softuni.barberstudio.Web.Dto.CommentCreateRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -32,7 +33,7 @@ public class CommentController {
 
 
     @PostMapping("/barber/{id}/comment")
-    public String addNewComment(@AuthenticationPrincipal AuthenticationDetails authenticationDetails, @PathVariable("id") UUID id, CommentCreateRequest commentCreateRequest, BindingResult bindingResult) {
+    public String addNewComment(@AuthenticationPrincipal AuthenticationDetails authenticationDetails, @PathVariable("id") UUID id, @Valid CommentCreateRequest commentCreateRequest, BindingResult bindingResult) {
 
         User user = userService.getById(authenticationDetails.getId());
         User barber = userService.getById(id);
