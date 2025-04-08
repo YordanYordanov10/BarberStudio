@@ -43,13 +43,13 @@ public class AppointmentController {
 
         User user  = userService.getById(authenticationDetails.getId());
 
-
         List<User> barbers = userService.findByUserRole();
 
+        LocalDate now = LocalDate.now();
 
         Map<String, Boolean> slots = new LinkedHashMap<>();
 
-        if (barberId != null && date != null) {
+        if (barberId != null && date != null && date.isAfter(now)) {
             slots = appointmentService.getAvailableSlots(date, barberId);
         }
 
@@ -63,10 +63,8 @@ public class AppointmentController {
         modelAndView.addObject("barberId", barberId);
         modelAndView.addObject("services",services);
 
-
         return modelAndView;
     }
-
 
 
     @PostMapping("/booking")

@@ -133,7 +133,7 @@
                         <p class="service-description" th:text="${service.description}">Service description</p>
                     </div>
                 </div>
-                <span class="service-price" th:text="${'BGN ' + service.price}">$0.00</span>
+                <span class="service-price" th:text="${#numbers.formatDecimal(service.price, 1, 2)} + ' BGN'">$0.00</span>
             </div>
         </div>
 

@@ -151,7 +151,7 @@
                         <td th:text="${appointment.barber.username}"></td>
                         <td th:text="${appointment.customerName}"></td>
                         <td th:text="${appointment.service.name}"></td>
-                        <td th:text="${'BGN ' + appointment.service.price}"></td>
+                        <td th:text="${'BGN ' + #numbers.formatDecimal(appointment.service.price, 1, 2)}"></td>
                         <td>
                             <a th:href="@{/details-info/check-email(barberId=${appointment.barber.id}, appointmentDate=${#temporals.format(appointment.appointmentDate, 'yyyy-MM-dd')}, timeSlot=${appointment.timeSlot})}"
                                class="btn btn-primary btn-sm"
@@ -187,8 +187,8 @@
                         <td th:text="${order.buyer.username}"></td>
                         <td th:text="${order.product.name}"></td>
                         <td th:text="${order.quantity}"></td>
-                        <td th:text="${order.product.price}"></td>
-                        <td th:text="${order.quantity * order.product.price}"></td>
+                        <td th:text="${#numbers.formatDecimal(order.product.price, 1,2)}"></td>
+                        <td th:text="${#numbers.formatDecimal(order.quantity * order.product.price,1,2)}"></td>
                     </tr>
                     </tbody>
                 </table>
